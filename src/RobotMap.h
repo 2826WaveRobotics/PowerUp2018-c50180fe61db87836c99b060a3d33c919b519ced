@@ -49,6 +49,7 @@ public:
 	static std::shared_ptr<WPI_TalonSRX> elevatorElevatorRight;
 	static std::shared_ptr<WPI_TalonSRX> elevatorElevatorLeft;
 	static std::shared_ptr<frc::DigitalInput> elevatorElevatorZero;
+	static std::shared_ptr<frc::DigitalInput> elevatorElevatorHigh;
 	static std::shared_ptr<frc::SpeedControllerGroup> elevatorLiftMotors;
 	static std::shared_ptr<WPI_TalonSRX> elbowElbowRight;
 	static std::shared_ptr<WPI_TalonSRX> elbowElbowLeft;

@@ -77,9 +77,11 @@ void Robot::DisabledInit(){
 void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 
+	std::cout << " Elevator Sensor: " << RobotMap::elevatorElevatorZero.get()->Get() << " Arm Break Beam: " << RobotMap::kirbyKirbyFull.get()->Get() << std::endl;
+	Wait(.001);
 
-	std::cout << "Right: " << drivePID.get()->GetRightEncoder()
-			 << std::endl;
+//	std::cout << "Elevator: " << elevator.get()->GetHeight() << " Arm: " << elbow.get()->GetAngle() << " Gyro: " << drivePID.get()->GetYaw()
+//			 << std::endl;
 
 	//std::cout << " Yaw: " << drivePID.get()->GetYaw() << std::endl;
 }
@@ -93,12 +95,13 @@ void Robot::AutonomousInit() {
 	{
 		if (gameData[1] == 'L') //LLL
 		{
-			m_autoMode.AddDefault("Scale Only", new ScaleOnlyAuto());
+		m_autoMode.AddDefault("Scale Only", new ScaleOnlyAuto());
 			//m_autoMode.AddDefault("TestCurve", new TestCurve(2, -90.0));
+			//m_autoMode.AddDefault("Drive Straight", new AutoDrive(-150, -0.5, 0));
 		}
 		else //LRL
 		{
-
+			//m_autoMode.AddDefault("Drive Straight", new AutoDrive(150, 0.5, 0));
 		}
 	}
 	else //gameData[0] = R
@@ -130,6 +133,9 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 
+	//Zero Elevator and Elbow
+	elbow.get()->ZeroDegrees();
+	elevator.get()->ZeroHeight();
 
 }
 
@@ -148,18 +154,45 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 
+
 	//Joystick controls
 	drivePID.get()->ArcadeDrive(oi.get()->getDriver()->GetRawAxis(1), 	oi.get()->getDriver()->GetRawAxis(4));
-	elbow.get()->SetElbowSpeed(oi.get()->getOperatorJS()->GetY(leftHand));
-	elevator.get()->SetElevatorSpeed(oi.get()->getOperatorJS()->GetY(rightHand));
+
+	double elevatorSpeed = oi.get()->getOperatorJS()->GetRawAxis(5);
+	if(elevatorSpeed < -0.15 || elevatorSpeed > 0.15){
+		elevator.get()->SetElevatorSpeed(elevatorSpeed);
+	}
+	else{
+		elevator.get()->SetElevatorSpeed(0);
+	}
+
+	double elbowSpeed = oi.get()->getOperatorJS()->GetRawAxis(1);
+	if(elbowSpeed < -0.15 || elbowSpeed > 0.15){
+			elbow.get()->SetElbowSpeed(elbowSpeed);
+		}
+		else{
+			elbow.get()->SetElbowSpeed(0);
+		}
+
 
 	if(oi.get()->getOperatorJS()->GetRawButton(1)){
 		drivePID.get()->Shift(true);
+
+	}
+	else if(oi.get()->getOperatorJS()->GetRawButton(2)){
 		ironCross.get()->DeployIronCross();
+	}
+	else if(oi.get()->getOperatorJS()->GetRawButton(3)){
+		ironCross.get()->DeployTRexArms(true);
+	}
+	else if(oi.get()->getOperatorJS()->GetRawButton(4)){
+		kirby.get()->SetKirbyKlaw(true);
 	}
 	else{
 		drivePID.get()->Shift(false);
-		RobotMap::ironCrossDeployCross.get()->Set(false);
+		ironCross.get()->RetractIronCross();
+		ironCross.get()->DeployTRexArms(false);
+		kirby.get()->SetKirbyKlaw(false);
 	}
 
 	//Kirby
