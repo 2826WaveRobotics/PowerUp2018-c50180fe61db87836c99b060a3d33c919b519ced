@@ -29,12 +29,13 @@ Requires(Robot::elevator.get());
 
 // Called just before this Command runs the first time
 void SetElevator::Initialize() {
-	Robot::elevator.get()->SetElevatorSpeed(m_power);
+	//Robot::elevator.get()->SetElevatorSpeed(m_power);
+	//Robot::elevator.get()->SetHeight()
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SetElevator::Execute() {
-m_currentposition = Robot::elevator.get()->GetHeight();
+	m_currentposition = Robot::elevator.get()->GetHeight();
 
 
 }
