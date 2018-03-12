@@ -24,9 +24,9 @@ int klaw = 3;
 
 
 //digital input
-int intakeSwitch = 6;
+int intakeSwitch = 7;
 int elbowZero = 4;
-int elevatorZero = 8; //This is what we are using
+int elevatorZero = 8;
 int elevatorHigh = 5;
 
 //encoder

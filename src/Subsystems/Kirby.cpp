@@ -63,6 +63,3 @@ void Kirby::SetKirbyKlaw(bool on){
 
 }
 
-bool Kirby::GetSwitch(){
-	return kirbyFull.get()->Get();
-}
