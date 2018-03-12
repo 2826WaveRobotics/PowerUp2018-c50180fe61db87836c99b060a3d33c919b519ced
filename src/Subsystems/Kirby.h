@@ -42,8 +42,7 @@ public:
 	void KirbyStop();
 	void SetKirby(double speed);
 	void SetKirbyKlaw(bool on);
-
-
+	bool GetSwitch();
 
 };
 

@@ -267,3 +267,59 @@ void DrivePID::SetDirection(double heading){
 		GetPIDController()->Enable();
 	}
 }
+
+void DrivePID::UpdateLimelight(){
+
+	std::shared_ptr<NetworkTable> table = NetworkTable::GetTable("limelight");
+
+	m_targetX = table->GetNumber("tx", 0);
+	m_targetY = table->GetNumber("ty", 0);
+	m_area = table->GetNumber("ta", 0);
+	m_skew = table->GetNumber("ts", 0);
+
+	std::cout << "x: " << m_targetX << "  y: " << m_targetY << "  a:" << m_area << "  s:" << m_skew << std::endl;
+}
+
+void DrivePID::AdjustWithVision(double power, double heading){
+	UpdateLimelight();
+
+	double newPower;
+	double newHeading;
+
+
+	if(m_targetX > 5){
+		std::cout << " Target is too far right" << std::endl;
+		newHeading = heading-m_targetX;
+	}
+	else if (m_targetX < -5){
+		std::cout << " Target is too far left" << std::endl;
+		newHeading = heading-m_targetX;
+	}
+	else{
+		newHeading = heading;
+	}
+
+	if (m_targetY > 5){
+		std::cout << "Too far away" <<std::endl;
+		newPower = power+(m_targetY/100);
+	}
+	else if(m_targetY < -5){
+		std::cout << "Too close" << std::endl;
+		newPower = power-(m_targetY/100);
+	}
+	else{
+		newPower = power;
+	}
+
+	DriveStraight(newPower, newHeading);
+}
+
+bool DrivePID::IsTargetFound(){
+	UpdateLimelight();
+	if((m_targetX < 5) && (m_targetX > -5) && (m_targetY < 5) && (m_targetY > -5)){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
