@@ -33,9 +33,7 @@ AutoDrive::AutoDrive(double distance, double power, double heading): frc::Comman
 void AutoDrive::Initialize() {
 	Robot::drivePID->SetPIDs(c_straightP, c_straightI, c_straightD);
 	Robot::drivePID.get()->ZeroEncoders();
-	//Robot::drivePID.get()->ZeroYaw();
-	Robot::elevator.get()->SetElevatorSpeed(0);
-	Robot::drivePID.get()->SetDirection(m_heading);
+	Robot::drivePID.get()->ZeroYaw();
 //	Robot::drivePID->DriveStraight(1, 0);
 }
 
@@ -44,13 +42,13 @@ void AutoDrive::Execute() {
 
 	Robot::drivePID->DriveStraight(m_power, m_heading);
 	double rightDist = Robot::drivePID->GetRightEncoder();
-	double leftDist = Robot::drivePID->GetLeftEncoder()*(-1);
+	double leftDist = Robot::drivePID->GetLeftEncoder();
 
 	if(rightDist < 0 ){
-		m_distanceTraveled =  (rightDist+leftDist)/2*(-1);
+		m_distanceTraveled =  (sqrt(rightDist*rightDist + leftDist*leftDist))*(-1);
 	}
 	else if (rightDist > 0){
-		m_distanceTraveled = ((rightDist+leftDist)/2)*(-1);
+		m_distanceTraveled =  sqrt(rightDist*rightDist + leftDist*leftDist);
 	}
 	else{
 		m_distanceTraveled = 0;
@@ -58,25 +56,21 @@ void AutoDrive::Execute() {
 
 
 	std::cout << "Right: " << rightDist << " Left:" << leftDist <<
-			" Distance Traveled: " << m_distanceTraveled <<
-			" Set Distance: " << m_distance
-			<< " Gyro: " << Robot::drivePID.get()->GetYaw() << std::endl;
+			" Distance Traveled: " << m_distanceTraveled << " Set Distance: "
+			<< m_distance << std::endl;
 
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDrive::IsFinished() {
 	if((m_power > 0) && (m_distanceTraveled > m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
 		return true;
 	}
 	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
 		return true;
 	}
 
 	else if(m_power == 0){
-		Robot::drivePID->SetSidePower(-1,1);
 		return true;
 	}
 	else{
@@ -89,7 +83,7 @@ bool AutoDrive::IsFinished() {
 void AutoDrive::End() {
 	Robot::drivePID->ArcadeDrive(0, 0);
 	Robot::drivePID.get()->ZeroEncoders();
-	//Robot::drivePID.get()->ZeroYaw();
+	Robot::drivePID.get()->ZeroYaw();
 }
 
 // Called when another command which requires one or more of the same

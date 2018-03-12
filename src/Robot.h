@@ -13,7 +13,6 @@
 #define _ROBOT_H
 
 #include "WPILib.h"
-#include "networktables/NetworkTableEntry.h"
 #include "Commands/Command.h"
 #include "RobotMap.h"
 #include "LiveWindow/LiveWindow.h"
@@ -58,8 +57,8 @@ public:
 
 	AHRS *m_gyro;
 
-
 private:
+
 	bool m_intakeLock;
 
 };
