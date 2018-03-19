@@ -29,13 +29,15 @@ LeftSwitchTimedAuto::LeftSwitchTimedAuto() {
     // these will run in order.
 
 	//Drive forward to switch
-	AddSequential(new AutoCurve(0.5, -30));
-	AddSequential(new AutoDriveTimed(-0.8, 0, 1.5));
-	AddSequential(new AutoCurve(0.3, 10));
+	AddSequential(new AutoCurve(0.5, -29));
+	AddSequential(new AutoDriveTimed(-0.8, 0, 1.));
+	AddSequential(new WaveWait(.3));
+	//AddSequential(new AutoCurve(0.3, 10));
 
 	//Place cube
-	AddParallel(new SetElbow(40));
-	AddSequential(new SetKirby(-0.8, .5));
+	AddSequential(new SetElbow(30));
+	AddSequential(new WaveWait(0.25));
+	AddSequential(new SetKirby(-0.6, .5));
 
     // To run multiple commands at the same time,
     // use AddParallel()

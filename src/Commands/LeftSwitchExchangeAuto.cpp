@@ -24,13 +24,36 @@ LeftSwitchExchangeAuto::LeftSwitchExchangeAuto() {
 
 
 	//Drive forward to switch
-	AddSequential(new AutoCurve(0.5, -30));
-	AddSequential(new AutoDrive(-40, -0.8, 0));
-	AddSequential(new AutoCurve(0.3, 10));
+	AddSequential(new AutoCurve(0.5, -27));
+	AddSequential(new AutoDrive(-70, -0.8, 0));
+	//AddSequential(new AutoCurve(0.3, 10));
 
 	//Place cube
 	AddParallel(new SetElbow(40));
-	AddSequential(new SetKirby(-0.8, .5));
+	AddSequential(new SetKirby(-0.35, .5));
+
+	//back up to grab new cube
+	AddSequential(new WaveWait(2));
+//	AddSequential(new AutoCurve(-0.7, -35));
+//	AddSequential(new WaveWait(.5));
+//	AddSequential(new AutoDrive(35, 0.8, 0));
+//	AddSequential(new WaveWait(0.25));
+//	AddSequential(new AutoCurve(0.3, 10));
+//	AddParallel(new SetElbow(160));
+//	AddSequential(new WaveWait(0.25));
+
+	//Grab cube
+//	AddSequential(new SetKirbyKlaw(true));
+//	AddSequential(new AutoDrive(-20, -0.5, 0));
+//	AddSequential(new WaveWait(0.25));
+//	AddSequential(new SetKirbyKlaw(false));
+//	//AddSequential(new AutoDriveWithVision(.1, 0, 1));
+//	AddSequential(new SetKirby(0.5, 0.5));
+//
+//	//Turn to face switch
+//	AddSequential(new AutoDrive(20, 0.5, 0));
+//	AddParallel(new SetElbow(30));
+//	AddSequential(new AutoCurve(0.3, 180));
 
 
  }

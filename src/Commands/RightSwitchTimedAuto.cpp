@@ -26,8 +26,8 @@
 RightSwitchTimedAuto::RightSwitchTimedAuto() {
 
 	//Drive forward to switch
-	AddSequential (new AutoCurve(0.5, 35));
-	AddSequential(new AutoDriveTimed(-0.8, 0, 1.5));
+	AddSequential (new AutoCurve(0.5, 20));
+	AddSequential(new AutoDriveTimed(-0.5, 0, 1.5));
 	AddSequential(new AutoCurve(0.3, -10));
 
 	//Place cube

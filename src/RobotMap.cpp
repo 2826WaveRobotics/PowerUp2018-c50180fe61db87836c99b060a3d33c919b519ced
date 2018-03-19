@@ -44,7 +44,7 @@ const double c_elevatorCalibration = 1.0;
 //the calibration value is then:  (Final Angle - Start Angle) / (Final Encoder Count - Start Encoder Count)
 const double c_elbowCalibration = 1.0;
 
-#define PracticeBot
+#define CompBot
 
 #ifdef TestChassis
 int CANTalon_driveDriveLeft1	    = 16;

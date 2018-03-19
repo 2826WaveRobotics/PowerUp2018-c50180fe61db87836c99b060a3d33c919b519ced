@@ -63,7 +63,6 @@ bool AutoCurve::IsFinished() {
 
 // Called once after isFinished returns true
 void AutoCurve::End() {
-	Robot::drivePID.get()->ArcadeDrive(0,0);
 	Robot::drivePID.get()->ZeroEncoders();
 	//Robot::drivePID.get()->ZeroYaw();
 	std::cout << "End" << std::endl;
