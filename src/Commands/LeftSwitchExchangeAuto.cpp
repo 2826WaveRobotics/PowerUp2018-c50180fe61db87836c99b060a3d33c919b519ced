@@ -12,28 +12,44 @@
 
 #include "LeftSwitchExchangeAuto.h"
 #include "AutoDrive.h"
+#include "AutoDriveTimed.h"
 #include "AutoCurve.h"
 #include "SetElbow.h"
 #include "SetKirby.h"
 #include "WaveWait.h"
 #include "AutoRotate.h"
 #include "SetKirbyKlaw.h"
+#include "AutoDriveWithVisionL.h"
 
 
 LeftSwitchExchangeAuto::LeftSwitchExchangeAuto() {
 
 
 	//Drive forward to switch
-	AddSequential(new AutoCurve(0.5, -27));
-	AddSequential(new AutoDrive(-70, -0.8, 0));
-	//AddSequential(new AutoCurve(0.3, 10));
+//	AddSequential (new AutoCurve(-0.5, -33));
+//	AddSequential(new AutoDrive(-50, -0.8, -33));
+//	AddSequential(new AutoDriveTimed(-0.3, 0, .7));
+//
+//	//Place cube
+//	AddSequential(new SetElbow(30));
+//	AddSequential(new SetKirby(-0.6, .5));
 
-	//Place cube
-	AddParallel(new SetElbow(40));
-	AddSequential(new SetKirby(-0.35, .5));
+	//Back up and grab cube from exchange
+	AddSequential(new AutoRotate(-40));
+	AddSequential(new AutoDrive(35, 0.8, -40));
+	AddSequential(new WaveWait(.25));
+	AddSequential(new AutoDrive(15, 0.4, 0));
+	AddSequential(new WaveWait(1));
+	AddSequential(new AutoDriveWithVisionL(-40, -0.4, 3));
+	AddSequential(new AutoRotate(0));
+	//AddSequential(new AutoDriveWithVisionL(-5, -0.2, 1));
 
-	//back up to grab new cube
-	AddSequential(new WaveWait(2));
+	AddSequential(new AutoDrive(5, .04, 0));
+	AddSequential(new AutoRotate(-90));
+	AddSequential(new AutoCurve(-0.5, -33));
+	AddSequential(new AutoDriveTimed(-0.3, 0, 0.5));
+
+
 //	AddSequential(new AutoCurve(-0.7, -35));
 //	AddSequential(new WaveWait(.5));
 //	AddSequential(new AutoDrive(35, 0.8, 0));

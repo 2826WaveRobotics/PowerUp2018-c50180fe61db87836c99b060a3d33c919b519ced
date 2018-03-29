@@ -27,9 +27,9 @@ const double c_straightP = 0.01;
 const double c_straightI = 0.0;
 const double c_straightD = 0;
 
-const double c_turnP = .004; // P = .004, I = 0, D = .0125
+const double c_turnP = .03; // P = .004, I = 0, D = .0125
 const double c_turnI = 0;
-const double c_turnD = 0.0125;
+const double c_turnD = 0;
 
 const double kToleranceDegrees = 2.0;
 
@@ -81,7 +81,7 @@ class DrivePID: public frc::PIDSubsystem {
 	void SetSidePower(double left, double right);
 	void DriveCurve(double power, double heading);
 	void DriveStraight(double power, double heading);
-	void Rotate(double move, double turn, double heading);
+	void Rotate(double heading);
 	void Shift(bool state);
 
 	double GetRightEncoder();
@@ -93,8 +93,9 @@ class DrivePID: public frc::PIDSubsystem {
 	void SetDirection(double heading);
 	void DriveTurning(double power, double heading);
 	void UpdateLimelight();
-	void AdjustWithVision(double power, double heading);
+	double AdjustWithVision();
 	bool IsTargetFound();
+	double m_newHeading;
 
 private:
 

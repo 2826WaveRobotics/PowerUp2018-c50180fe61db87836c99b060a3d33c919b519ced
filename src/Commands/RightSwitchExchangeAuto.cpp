@@ -31,25 +31,32 @@ RightSwitchExchangeAuto::RightSwitchExchangeAuto() {
     //      AddSequential(new Command2());
     // these will run in order.
 
-	//Drive forward to switch
-	AddSequential (new AutoCurve(0.5, 19));
-	AddSequential(new AutoDrive(-45, -0.8, 0));
-	AddSequential(new AutoDriveTimed(-0.5, 0, 0.5));
-	//AddSequential(new AutoCurve(0.3, -10));
+//	//Drive forward to switch
+//	AddSequential (new AutoCurve(-0.5, 23));
+//	AddSequential(new AutoDrive(-50, -0.8, 20));
+//	AddSequential(new AutoDriveTimed(-0.3, 0, 0.3));
+//
+//	//Place cube
+//	AddSequential(new SetElbow(30));
+//	AddSequential(new SetKirby(-0.6, .5));
 
-	//Place cube
-	AddSequential(new SetElbow(30));
-	AddSequential(new SetKirby(-0.6, .5));
-
-	//back up to grab new cube
-	//AddSequential(new WaveWait(.5));
-//	AddSequential(new AutoCurve(-0.7, 35));
+//	//back up to grab new cube
 //	AddSequential(new WaveWait(.5));
-//	AddSequential(new AutoDrive(35, 0.8, 0));
-//	AddSequential(new WaveWait(0.25));
-//	AddSequential(new AutoCurve(0.3, -10));
+	AddSequential(new AutoDrive(40, 0.8, 85));
+//	AddSequential(new WaveWait(.5));
+//	//AddSequential(new AutoDrive(15, 0.8, 55));
+	AddSequential(new WaveWait(0.25));
+	//AddSequential(new AutoRotate(0));
+	AddSequential(new AutoDrive(22, 0.4, 0));
+	AddSequential(new WaveWait(1));
 //	AddParallel(new SetElbow(160));
 //	AddSequential(new WaveWait(0.25));
+
+	AddSequential(new AutoDriveWithVision(-40, -0.4, 3));
+	AddSequential(new AutoRotate(0));
+	//AddSequential(new AutoDriveWithVision(-5, -0.2, 2));
+	//AddSequential(new AutoDrive(-25, -0.8, 0, 1));
+	//AddSequential(new AutoDriveWithVision(1));
 
 	//Grab cube
 //	AddSequential(new SetKirbyKlaw(true));

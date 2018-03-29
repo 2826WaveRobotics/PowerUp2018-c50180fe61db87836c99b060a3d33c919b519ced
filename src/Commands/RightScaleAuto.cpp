@@ -28,14 +28,17 @@
 RightScaleAuto::RightScaleAuto() {
 
 	//Drive forward to scale
-	AddSequential(new AutoDrive(-200, -0.8, 0));
-	AddParallel(new SetElbow(160));
-	AddSequential(new AutoDriveTimed(1, 0, .25 ));
-	AddSequential(new AutoCurve(-0.3, -50));
+	AddSequential(new AutoDrive(-40, -0.8, 0));
+	//AddParallel(new SetElbow(160));
+	//AddSequential(new AutoDriveTimed(1, 0, .25 ));
+	AddSequential(new WaveWait(0.5));
+	AddSequential(new AutoRotate(-60));
+	AddSequential(new WaveWait(.5));
+	AddSequential(new AutoRotate(-90));
 	AddParallel(new SetElevator(5));
-	AddSequential(new AutoDrive(-10, -0.8, 90));
+	//AddSequential(new AutoDrive(-10, -0.8, 90));
 
 	//Place cube
-	AddSequential(new SetKirbyKlaw(true));
+	//AddSequential(new SetKirbyKlaw(true));
 
  }
