@@ -32,9 +32,10 @@ RightSwitchExchangeAuto::RightSwitchExchangeAuto() {
     // these will run in order.
 
 //	//Drive forward to switch
-//	AddSequential (new AutoCurve(-0.5, 23));
-//	AddSequential(new AutoDrive(-50, -0.8, 20));
-//	AddSequential(new AutoDriveTimed(-0.3, 0, 0.3));
+	AddSequential (new AutoCurve(-0.5, 25));
+	AddSequential(new AutoDrive(-50, -0.8, 25));
+	AddSequential(new AutoDriveTimed(-0.3, 0, 0.5));
+	AddSequential(new WaveWait(1));
 //
 //	//Place cube
 //	AddSequential(new SetElbow(30));
@@ -42,6 +43,7 @@ RightSwitchExchangeAuto::RightSwitchExchangeAuto() {
 
 //	//back up to grab new cube
 //	AddSequential(new WaveWait(.5));
+	AddSequential(new AutoRotate(40));
 	AddSequential(new AutoDrive(40, 0.8, 85));
 //	AddSequential(new WaveWait(.5));
 //	//AddSequential(new AutoDrive(15, 0.8, 55));

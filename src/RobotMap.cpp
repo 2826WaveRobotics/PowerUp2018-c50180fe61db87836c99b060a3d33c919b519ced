@@ -132,8 +132,8 @@ std::shared_ptr<WPI_TalonSRX> RobotMap::drivePIDRight2;
 std::shared_ptr<WPI_TalonSRX> RobotMap::drivePIDRight3;
 std::shared_ptr<frc::SpeedControllerGroup> RobotMap::drivePIDRightDriveGroup;
 std::shared_ptr<frc::DifferentialDrive> RobotMap::drivePIDDiffDrive;
-//std::shared_ptr<frc::Encoder> RobotMap::drivePIDLeftEncoder;
-//std::shared_ptr<frc::Encoder> RobotMap::drivePIDRightEncoder;
+std::shared_ptr<frc::Encoder> RobotMap::drivePIDLeftEncoder;
+std::shared_ptr<frc::Encoder> RobotMap::drivePIDRightEncoder;
 std::shared_ptr<frc::Solenoid> RobotMap::drivePIDShifter;
 std::shared_ptr<Compressor> RobotMap::compressorSubsystemCompressor;
 
@@ -267,14 +267,14 @@ void RobotMap::init() {
         drivePIDDiffDrive->SetExpiration(0.1);
         drivePIDDiffDrive->SetMaxOutput(1.0);
 
-//    drivePIDLeftEncoder.reset(new frc::Encoder(9, 10, false, frc::Encoder::k4X));
-//    //lw->AddSensor("DrivePID", "LeftEncoder", drivePIDLeftEncoder);
-//    drivePIDLeftEncoder->SetDistancePerPulse(1.0);
-//    drivePIDLeftEncoder->SetPIDSourceType(frc::PIDSourceType::kRate);
-//    drivePIDRightEncoder.reset(new frc::Encoder(0, 1, false, frc::Encoder::k4X));
-//   // lw->AddSensor("DrivePID", "RightEncoder", drivePIDRightEncoder);
-//    drivePIDRightEncoder->SetDistancePerPulse(1.0);
-//    drivePIDRightEncoder->SetPIDSourceType(frc::PIDSourceType::kRate);
+    drivePIDLeftEncoder.reset(new frc::Encoder(2, 3, false, frc::Encoder::k4X));
+    //lw->AddSensor("DrivePID", "LeftEncoder", drivePIDLeftEncoder);
+    drivePIDLeftEncoder->SetDistancePerPulse(1.0);
+    drivePIDLeftEncoder->SetPIDSourceType(frc::PIDSourceType::kRate);
+    drivePIDRightEncoder.reset(new frc::Encoder(0, 1, false, frc::Encoder::k4X));
+   // lw->AddSensor("DrivePID", "RightEncoder", drivePIDRightEncoder);
+    drivePIDRightEncoder->SetDistancePerPulse(1.0);
+    drivePIDRightEncoder->SetPIDSourceType(frc::PIDSourceType::kRate);
     drivePIDShifter.reset(new frc::Solenoid(0, driveShift));
     //lw->AddActuator("DrivePID", "Shifter", drivePIDShifter);
     
