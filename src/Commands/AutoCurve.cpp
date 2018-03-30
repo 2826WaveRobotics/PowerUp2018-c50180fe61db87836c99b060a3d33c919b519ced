@@ -51,7 +51,7 @@ void AutoCurve::Execute() {
 bool AutoCurve::IsFinished() {
 	double yaw = Robot::drivePID->GetYaw();
 	if(((m_heading + 5) > yaw) && ((m_heading - 5) < yaw)){
-		Robot::drivePID->SetSidePower(-1,1);
+		//Robot::drivePID->SetSidePower(-1,1);
 		std::cout << " FINAL: " << fabs(Robot::drivePID->GetYaw()) << std::endl;
 		return true;
 	}

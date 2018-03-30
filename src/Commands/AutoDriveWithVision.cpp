@@ -79,17 +79,21 @@ void AutoDriveWithVision::Execute() {
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDriveWithVision::IsFinished() {
 	if((m_power > 0) && (m_distanceTraveled > m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
+		Robot::drivePID->SetSidePower(-1,-1);
+		Wait(.1);
 		std::cout << "  1  " << std::endl;
 		return true;
 	}
 	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
+		Robot::drivePID->SetSidePower(1,1);
+		Wait(.1);
 		std::cout << "  2  " << std::endl;
 		return true;
 	}
 	else if(IsTimedOut()){
 		std::cout << "  3  " << std::endl;
+		//Robot::drivePID->SetSidePower(-1,1);
+		Wait(.1);
 		return true;
 	}
 	else{

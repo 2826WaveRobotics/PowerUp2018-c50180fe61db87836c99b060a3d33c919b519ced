@@ -80,15 +80,19 @@ void AutoDriveWithVisionL::Execute() {
 bool AutoDriveWithVisionL::IsFinished() {
 	if((m_power > 0) && (m_distanceTraveled > m_distance)){
 		Robot::drivePID->SetSidePower(-1,1);
+		Wait(.1);
 		std::cout << "  1  " << std::endl;
 		return true;
 	}
 	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
 		Robot::drivePID->SetSidePower(-1,1);
+		Wait(.1);
 		std::cout << "  2  " << std::endl;
 		return true;
 	}
 	else if(IsTimedOut()){
+		//Robot::drivePID->SetSidePower(-1,1);
+		Wait(.1);
 		std::cout << "  3  " << std::endl;
 		return true;
 	}

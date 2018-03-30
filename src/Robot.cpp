@@ -26,6 +26,7 @@
 #include "Commands/LeftScaleAuto.h"
 #include "Commands/RightScaleAuto.h"
 #include "Commands/AutoDriveTimed.h"
+#include "Commands/AutoDistance.h"
 
 using namespace nt;
 
@@ -95,14 +96,17 @@ void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 	//drivePID.get()->UpdateLimelight();
 
-//	std::cout << " Arm Encoder : " << elbow.get()->GetAngle() << "  Elevator Encoder: "<< elevator.get()->GetHeight() << " Drive Right:  "
-//			<< drivePID.get()->GetRightEncoder() << "  Drive Left:  " << drivePID.get()->GetLeftEncoder() << "  Arm Sensor:  "
-//			<< kirby.get()->GetSwitch() << "  Elevator Sensor:  " << elevator.get()->IsSensorTripped() << std::endl;
+	std::cout << /*" Arm Encoder : " << elbow.get()->GetAngle() << "  Elevator Encoder: "
+			<< elevator.get()->GetHeight() <<*/ " Drive Right:  "
+			<< drivePID.get()->GetRightEncoder() << "  Drive Left:  " << drivePID.get()->GetLeftEncoder() << "  Arm Sensor:  "
+			/*<< kirby.get()->GetSwitch() << "  Elevator Sensor:  " << elevator.get()->IsSensorTripped()*/ <<std::endl;
 
 //	std::cout << "Elevator Encoder: " << elevator.get()->GetHeight() <<  "  Elevator Sensor:  " << elevator.get()->IsSensorTripped()
 //			<< "  Raw Elevator Sensor: " << RobotMap::elevatorElevatorZero.get()->Get() << std::endl;
 
-	//std::cout << " Gyro: " << drivePID.get()->GetYaw() << std::endl;;
+	//std::cout << " Gyro: " << drivePID.get()->GetYaw() << std::endl;
+
+	//std::cout << " Rate:  " << drivePID.get()->GetVelocity() << std::endl;
 
 	Wait(.001);
 }
@@ -118,7 +122,8 @@ void Robot::AutonomousInit() {
 	     autonomousCommand = new Z_Command();
 	}
 	else if(m_autoType == p_driveStraight){
-	    autonomousCommand = new AutoCurve(0.6, -90);
+		autonomousCommand = new AutoDrive(-150, -0.8, 0);
+	    //autonomousCommand = new AutoDistance(-30, -1.3, -.22, 0, true, 1, 4, .3);
 
 		 std::cout << " Drive Straight" << std::endl;
 	}
