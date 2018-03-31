@@ -42,10 +42,10 @@ void AutoDriveWithVision::Initialize() {
 	m_rotate = 2.5*Robot::drivePID->AdjustWithVision();
 	//Robot::drivePID.get()->SetDirection(2.5*m_rotate);
 	if(m_rotate > 0 ){
-		m_distance = -3.5*Robot::drivePID->AdjustWithVision();
+		m_distance = -3*Robot::drivePID->AdjustWithVision();
 	}
 	else{
-		m_distance = 3.5*Robot::drivePID->AdjustWithVision();
+		m_distance = 3*Robot::drivePID->AdjustWithVision();
 	}
 
 

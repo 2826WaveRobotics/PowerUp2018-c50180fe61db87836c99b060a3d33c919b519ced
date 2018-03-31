@@ -26,9 +26,9 @@ LeftSwitchExchangeAuto::LeftSwitchExchangeAuto() {
 
 
 	//Drive forward to switch
-//	AddSequential (new AutoCurve(-0.5, -33));
-//	AddSequential(new AutoDrive(-50, -0.8, -33));
-//	AddSequential(new AutoDriveTimed(-0.3, 0, .7));
+	AddSequential (new AutoCurve(-0.5, -33));
+	AddSequential(new AutoDrive(-50, -0.8, -33));
+	AddSequential(new AutoDriveTimed(-0.3, 0, .7));
 //
 //	//Place cube
 //	AddSequential(new SetElbow(30));
@@ -44,10 +44,13 @@ LeftSwitchExchangeAuto::LeftSwitchExchangeAuto() {
 	AddSequential(new AutoRotate(0));
 	//AddSequential(new AutoDriveWithVisionL(-5, -0.2, 1));
 
-	AddSequential(new AutoDrive(5, .04, 0));
-	AddSequential(new AutoRotate(-90));
-	AddSequential(new AutoCurve(-0.5, -33));
-	AddSequential(new AutoDriveTimed(-0.3, 0, 0.5));
+	AddSequential(new AutoDrive(-5, -0.8, 0));
+	AddSequential(new WaveWait(0.5));
+	AddSequential(new AutoDrive(20, 0.5, 0));
+	AddSequential(new AutoRotate(-33));
+	AddSequential(new AutoDrive(-50, -0.8, -33));
+	AddSequential(new WaveWait(0.5));
+	AddSequential(new AutoRotate(0));
 
 
 //	AddSequential(new AutoCurve(-0.7, -35));

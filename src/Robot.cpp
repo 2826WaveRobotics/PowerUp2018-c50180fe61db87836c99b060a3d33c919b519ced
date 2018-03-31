@@ -108,10 +108,10 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-
-
 	std::string gameData;
 	gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
+
+	std::shared_ptr<NetworkTable> table = NetworkTable::GetTable("limelight");
 
 	if(m_autoType == p_doNothing){
 		 std::cout << " Do Nothing 1" << std::endl;
@@ -128,6 +128,7 @@ void Robot::AutonomousInit() {
 		{
 			std::cout << " LLL " << std::endl;
 			 if(m_autoType == p_switchCube){
+				 table->PutNumber("pipeline", 1);
 				 std::cout << " Switch Cube" << std::endl;
 				 autonomousCommand = new LeftSwitchExchangeAuto();
 			 }
@@ -151,6 +152,7 @@ void Robot::AutonomousInit() {
 		{
 			std::cout << " LRL " << std::endl;
 			 if(m_autoType == p_switchCube){
+				 table->PutNumber("pipeline", 1);
 				 std::cout << " Switch Cube LRL " << std::endl;
 				 autonomousCommand = new LeftSwitchExchangeAuto();
 			 }
@@ -176,6 +178,7 @@ void Robot::AutonomousInit() {
 		{
 			std::cout << " RRR " << std::endl;
 			 if( m_autoType == p_switchCube ){
+				 table->PutNumber("pipeline", 0);
 				 std::cout << " Switch Cube RRR" << std::endl;
 				 autonomousCommand = new RightSwitchExchangeAuto ();
 			 }
@@ -199,6 +202,7 @@ void Robot::AutonomousInit() {
 		{
 			std::cout << " RLR " << std::endl;
 			 if( m_autoType == p_switchCube ){
+				 table->PutNumber("pipeline", 0);
 				 std::cout << " Switch Cube RLR " << std::endl;
 				 autonomousCommand = new RightSwitchExchangeAuto();
 			 }
@@ -274,165 +278,196 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 
-//	//Drive and Shift To Climb
-//	if(oi.get()->getDriver()->GetRawButton(8)){
-//		drivePID.get()->Shift(true);
-//	}
-//	else if(oi.get()->getDriver()->GetRawButton(7)){
-//			drivePID.get()->Shift(false);
-//		}
-//	else if(RobotMap::drivePIDShifter->Get()){
-//		double driverY = oi.get()->getDriver()->GetRawAxis(1);
-//		if(fabs(driverY) > 0.15){ // Only can climb by pressin joystick down
-//			drivePID.get()->ArcadeDrive(fabs(driverY), 0);
-//		}
-//		else{
-//			drivePID.get()->ArcadeDrive(0, 0);
-//		}
-//	}
-//	else{
-//		drivePID.get()->ArcadeDrive(oi.get()->getDriver()->GetRawAxis(1), 	-(oi.get()->getDriver()->GetRawAxis(4)));
-//	}
-//
-//	//Elevator
-//	int trackpad = oi.get()->getOperatorJS()->GetPOV(0);
-//	//Up: 0 Right: 20  Down: 70  Left: 40
-//
-//	double elevatorSpeed = (-1)*oi.get()->getOperatorJS()->GetRawAxis(5);
-//	double elevatorHeight = elevator.get()->GetHeight();
-//	elevator.get()->SensorTriggered();
-//
-//	std::cout << "Trackpad:  " << trackpad << " Height: " << elevatorHeight << std::endl;
-//
-//
-//	if(trackpad != (-1)){
-//		if(trackpad==0){
-//			elevator.get()->SetHeight(0);
-//		}
-//		if(trackpad==90){
-//			elevator.get()->SetHeight(20);
-//		}
-//		if(trackpad==180){
-//			elevator.get()->SetHeight(70);
-//		}
-//		if(trackpad==270){
-//			elevator.get()->SetHeight(40);
-//		}
-//	}
-//	else if(((elevatorSpeed > -0.15) && (elevatorSpeed < 0)) || (( elevatorSpeed  < 0.15) && (elevatorSpeed > 0))){
-//		std::cout << " Deadband " << std::endl;
-//		elevator.get()->SetElevatorSpeed(0);
-//	}
-//	else if(RobotMap::drivePIDShifter->Get()){
-//		std::cout << "Elevator stop on shifter" << std::endl;
-//		elevator.get()->SetElevatorSpeed(0);
-//	}
-//	else{
-//		if((elevatorHeight < 71.5) && (elevatorSpeed > 0.15)){
-//			std::cout << " Elevator under 71 " <<std::endl;
-//			elevator.get()->SetElevatorSpeed(elevatorSpeed);
-//		}
-//		if((elevatorHeight > 0) && (elevatorSpeed < -0.15)){
-//			std::cout << " Elevator Over 0 " << std::endl;
-//			elevator.get()->SetElevatorSpeed(elevatorSpeed);
-//		}
-//	}
-//
-//	//Elbow
-//	double elbowSpeed = oi.get()->getOperatorJS()->GetRawAxis(1); //Left Y Axis
-//	bool elbowOverride = oi.get()->getOperatorJS()->GetRawButton(7);
-//	double elbowPosition = elbow.get()->GetAngle();
-//
-//	bool operatorY = oi.get()->getOperatorJS()->GetRawButton(4);
-//	bool operatorB = oi.get()->getOperatorJS()->GetRawButton(2);
-//	bool operatorA = oi.get()->getOperatorJS()->GetRawButton(1);
-//	bool operatorX = oi.get()->getOperatorJS()->GetRawButton(3);
-//	//Operator Y: 0, Operator B: 140, Operator A: 160, Operator X: 20
-//
-//	if(elbowOverride){
-//		elbow.get()->ZeroDegrees();
-//		if(elbowSpeed < -0.15 || elbowSpeed > 0.15){
-//			elbow.get()->SetElbowSpeed(elbowSpeed);
-//		}
-//		else{
-//			elbow.get()->SetElbowSpeed(0);
-//		}
-//	}
-//	else if(operatorY || operatorB || operatorA || operatorX){
-//		if(operatorY){
-//			elbow.get()->SetAngle(0);
-//		}
-//		if(operatorB){
-//			elbow.get()->SetAngle(125);
-//		}
-//		if(operatorA){
-//			elbow.get()->SetAngle(155);
-//		}
-//		if(operatorX){
-//			elbow.get()->SetAngle(15);
-//		}
-//	}
-//	else{
-//		if(elbowPosition < 0){
-//			if(elbowSpeed > 0.15){
-//				elbow.get()->SetElbowSpeed(elbowSpeed);
-//			}
-//			else{
-//				elbow.get()->SetElbowSpeed(0);
-//			}
-//		}
-//		else if (elbowPosition > 160){
-//			if(elbowSpeed < -0.15){
-//				elbow.get()->SetElbowSpeed(elbowSpeed);
-//			}
-//			else{
-//				elbow.get()->SetElbowSpeed(0);
-//			}
-//		}
-//		else{
-//			if((elbowSpeed < -0.15) || (elbowSpeed > 0.15)){
-//				elbow.get()->SetElbowSpeed(elbowSpeed);
-//			}
-//			else{
-//				elbow.get()->SetElbowSpeed(0);
-//			}
-//		}
-//	}
-//
-//	//Kirby
-//	double rightTrigger = oi.get()->getOperatorJS()->GetRawAxis(2); //Intake
-//	double leftTrigger =  oi.get()->getOperatorJS()->GetRawAxis(3); //Outtake
-//	double driverLTrigger = oi.get()->getDriver()->GetRawAxis(3);
-//
-//	if(rightTrigger > 0.15 && leftTrigger < 0.15){
-//		kirby.get()->SetKirby(-rightTrigger);
-//	}
-//	else if (driverLTrigger > 0.15){
-//		kirby.get()->SetKirby(driverLTrigger);
-//	}
-//	else if (rightTrigger < 0.15 && leftTrigger > 0.15){
-//		kirby.get()->SetKirby(leftTrigger);
-//	}
-//	else{
-//		kirby.get()->KirbyStop();
-//	}
-//
-//	bool leftBumper = oi.get()->getOperatorJS()->GetRawButton(5);
-//	bool xButton = oi.get()->getOperatorJS()->GetRawButton(3);
-//
-//	if(leftBumper == 1){
-//		m_intakeLock = false;
-//	}
-//
-//	if(m_intakeLock == true){
-//		kirby.get()->SetKirbyKlaw(m_intakeLock);
-//	}
-//	else if(xButton == 1){
-//		m_intakeLock = true;
-//	}
-//	else{
-//		kirby.get()->SetKirbyKlaw(leftBumper);
-//	}
+	//Drive and Shift To Climb
+	bool shiftOn  = oi.get()->getDriver()->GetRawButton(8);
+	bool shiftOff = oi.get()->getDriver()->GetRawButton(7);
+	bool isShifted = RobotMap::drivePIDShifter->Get();
+
+	double driverY = oi.get()->getDriver()->GetRawAxis(1);
+	double driverX = -(oi.get()->getDriver()->GetRawAxis(4));
+	bool visionOR = oi.get()->getDriver()->GetRawButton(5);
+	bool visionAlign = oi.get()->getDriver()->GetRawButton(1);
+
+	//if aligned it shakes
+
+	if(fabs(driverY) < 0.15){
+		driverY = 0;
+	}
+	if(fabs(driverX) < 0.15){
+		driverX = 0;
+	}
+
+	if(shiftOn){
+		drivePID.get()->Shift(true);
+	}
+	else if(shiftOff){
+			drivePID.get()->Shift(false);
+		}
+	else if(isShifted){
+		if(fabs(driverY) > 0.15){ // Only can climb by pressin joystick down
+			drivePID.get()->ArcadeDrive(fabs(driverY), 0);
+		}
+		else{
+			drivePID.get()->ArcadeDrive(0, 0);
+		}
+	}
+	else if(visionOR){
+		drivePID.get()->ArcadeDrive(driverY, driverX);
+	}
+	else if(visionAlign){
+		drivePID.get()->DriveTurning(driverY);
+		double outputX = drivePID.get()->OutputX();
+		if(outputX == 0){
+			oi.get()->getDriver()->SetRumble(Joystick::kLeftRumble, 0);
+		}
+		else if((outputX > -3) && (outputX < 3)){
+			oi.get()->getDriver()->SetRumble(Joystick::kLeftRumble, 1);
+		}
+		else{
+			oi.get()->getDriver()->SetRumble(Joystick::kLeftRumble, 0);
+		}
+	}
+	else{
+		drivePID.get()->ArcadeDrive(driverY, driverX);
+		oi.get()->getDriver()->SetRumble(Joystick::kLeftRumble, 0);
+	}
+
+	//Elevator
+	int trackpad = oi.get()->getOperatorJS()->GetPOV(0);
+	//Up: 0 Right: 20  Down: 70  Left: 40
+
+	double elevatorSpeed = (-1)*oi.get()->getOperatorJS()->GetRawAxis(5);
+	double elevatorHeight = elevator.get()->GetHeight();
+	elevator.get()->SensorTriggered();
+
+	if(trackpad != (-1)){
+		if(trackpad==0){
+			elevator.get()->SetHeight(0);
+		}
+		if(trackpad==90){
+			elevator.get()->SetHeight(20);
+		}
+		if(trackpad==180){
+			elevator.get()->SetHeight(70);
+		}
+		if(trackpad==270){
+			elevator.get()->SetHeight(40);
+		}
+	}
+	else if(((elevatorSpeed > -0.15) && (elevatorSpeed < 0)) || (( elevatorSpeed  < 0.15) && (elevatorSpeed > 0))){
+		std::cout << " Deadband " << std::endl;
+		elevator.get()->SetElevatorSpeed(0);
+	}
+	else if(RobotMap::drivePIDShifter->Get()){
+		std::cout << "Elevator stop on shifter" << std::endl;
+		elevator.get()->SetElevatorSpeed(0);
+	}
+	else{
+		if((elevatorHeight < 71.5) && (elevatorSpeed > 0.15)){
+			std::cout << " Elevator under 71 " <<std::endl;
+			elevator.get()->SetElevatorSpeed(elevatorSpeed);
+		}
+		if((elevatorHeight > 0) && (elevatorSpeed < -0.15)){
+			std::cout << " Elevator Over 0 " << std::endl;
+			elevator.get()->SetElevatorSpeed(elevatorSpeed);
+		}
+	}
+
+	//Elbow
+	double elbowSpeed = oi.get()->getOperatorJS()->GetRawAxis(1); //Left Y Axis
+	bool elbowOverride = oi.get()->getOperatorJS()->GetRawButton(7);
+	double elbowPosition = elbow.get()->GetAngle();
+
+	bool operatorY = oi.get()->getOperatorJS()->GetRawButton(4);
+	bool operatorB = oi.get()->getOperatorJS()->GetRawButton(2);
+	bool operatorA = oi.get()->getOperatorJS()->GetRawButton(1);
+	bool operatorX = oi.get()->getOperatorJS()->GetRawButton(3);
+	//Operator Y: 0, Operator B: 140, Operator A: 160, Operator X: 20
+
+	if(elbowOverride){
+		elbow.get()->ZeroDegrees();
+		if(elbowSpeed < -0.15 || elbowSpeed > 0.15){
+			elbow.get()->SetElbowSpeed(elbowSpeed);
+		}
+		else{
+			elbow.get()->SetElbowSpeed(0);
+		}
+	}
+	else if(operatorY || operatorB || operatorA || operatorX){
+		if(operatorY){
+			elbow.get()->SetAngle(0);
+		}
+		if(operatorB){
+			elbow.get()->SetAngle(125);
+		}
+		if(operatorA){
+			elbow.get()->SetAngle(155);
+		}
+		if(operatorX){
+			elbow.get()->SetAngle(15);
+		}
+	}
+	else{
+		if(elbowPosition < 0){
+			if(elbowSpeed > 0.15){
+				elbow.get()->SetElbowSpeed(elbowSpeed);
+			}
+			else{
+				elbow.get()->SetElbowSpeed(0);
+			}
+		}
+		else if (elbowPosition > 160){
+			if(elbowSpeed < -0.15){
+				elbow.get()->SetElbowSpeed(elbowSpeed);
+			}
+			else{
+				elbow.get()->SetElbowSpeed(0);
+			}
+		}
+		else{
+			if((elbowSpeed < -0.15) || (elbowSpeed > 0.15)){
+				elbow.get()->SetElbowSpeed(elbowSpeed);
+			}
+			else{
+				elbow.get()->SetElbowSpeed(0);
+			}
+		}
+	}
+
+	//Kirby
+	double rightTrigger = oi.get()->getOperatorJS()->GetRawAxis(2); //Intake
+	double leftTrigger =  oi.get()->getOperatorJS()->GetRawAxis(3); //Outtake
+	double driverLTrigger = oi.get()->getDriver()->GetRawAxis(3);
+
+	if(rightTrigger > 0.15 && leftTrigger < 0.15){
+		kirby.get()->SetKirby(-rightTrigger);
+	}
+	else if (driverLTrigger > 0.15){
+		kirby.get()->SetKirby(driverLTrigger);
+	}
+	else if (rightTrigger < 0.15 && leftTrigger > 0.15){
+		kirby.get()->SetKirby(leftTrigger);
+	}
+	else{
+		kirby.get()->KirbyStop();
+	}
+
+	bool leftBumper = oi.get()->getOperatorJS()->GetRawButton(5);
+	bool xButton = oi.get()->getOperatorJS()->GetRawButton(3);
+
+	if(leftBumper == 1){
+		m_intakeLock = false;
+	}
+
+	if(m_intakeLock == true){
+		kirby.get()->SetKirbyKlaw(m_intakeLock);
+	}
+	else if(xButton == 1){
+		m_intakeLock = true;
+	}
+	else{
+		kirby.get()->SetKirbyKlaw(leftBumper);
+	}
 
 }
 

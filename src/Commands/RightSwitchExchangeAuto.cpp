@@ -44,12 +44,12 @@ RightSwitchExchangeAuto::RightSwitchExchangeAuto() {
 //	//back up to grab new cube
 //	AddSequential(new WaveWait(.5));
 	AddSequential(new AutoRotate(40));
-	AddSequential(new AutoDrive(40, 0.8, 85));
+	AddSequential(new AutoDrive(40, 0.8, 40));
 //	AddSequential(new WaveWait(.5));
 //	//AddSequential(new AutoDrive(15, 0.8, 55));
 	AddSequential(new WaveWait(0.25));
 	//AddSequential(new AutoRotate(0));
-	AddSequential(new AutoDrive(22, 0.4, 0));
+	AddSequential(new AutoDrive(22, 0.4, -5));
 	AddSequential(new WaveWait(1));
 //	AddParallel(new SetElbow(160));
 //	AddSequential(new WaveWait(0.25));
@@ -57,21 +57,25 @@ RightSwitchExchangeAuto::RightSwitchExchangeAuto() {
 	AddSequential(new AutoDriveWithVision(-40, -0.4, 3));
 	AddSequential(new AutoRotate(0));
 	//AddSequential(new AutoDriveWithVision(-5, -0.2, 2));
-	//AddSequential(new AutoDrive(-25, -0.8, 0, 1));
+	AddSequential(new AutoDrive(-15, -0.8, 0));
+	AddSequential(new WaveWait(0.5));
 	//AddSequential(new AutoDriveWithVision(1));
 
 	//Grab cube
 //	AddSequential(new SetKirbyKlaw(true));
-//	AddSequential(new AutoDrive(-20, -0.5, 0));
+//	AddSequential(new AutoDrive(20, 0.8, 0));
 //	AddSequential(new WaveWait(0.25));
 //	AddSequential(new SetKirbyKlaw(false));
 //	//AddSequential(new AutoDriveWithVision(.1, 0, 1));
 //	AddSequential(new SetKirby(0.5, 0.5));
 //
 //	//Turn to face switch
-//	AddSequential(new AutoDrive(20, 0.5, 0));
-//	AddParallel(new SetElbow(30));
-//	AddSequential(new AutoCurve(0.3, 180));
+	AddSequential(new AutoDrive(20, 0.5, 0));
+	//AddParallel(new SetElbow(30));
+	AddSequential(new AutoRotate(30));
+	AddSequential(new AutoDrive(-35, -0.8, 30));
+	AddSequential(new WaveWait(0.5));
+	AddSequential(new AutoRotate(0));
 
     // To run multiple commands at the same time,
     // use AddParallel()

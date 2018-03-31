@@ -91,9 +91,10 @@ class DrivePID: public frc::PIDSubsystem {
 	void ZeroYaw();
 	void SetPIDs(double kP, double kI, double kD);
 	void SetDirection(double heading);
-	void DriveTurning(double power, double heading);
+	void DriveTurning(double driverY);
 	void UpdateLimelight();
 	double AdjustWithVision();
+	double OutputX();
 	bool IsTargetFound();
 	double m_newHeading;
 

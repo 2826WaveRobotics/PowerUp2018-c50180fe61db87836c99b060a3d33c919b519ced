@@ -1,5 +1,6 @@
 #include "DrivePID.h"
 #include "../RobotMap.h"
+#include "../OI.h"
 #include "SmartDashboard/SmartDashboard.h"
 #include "LiveWindow/LiveWindow.h"
 #include <iostream>
@@ -253,10 +254,34 @@ void DrivePID::SetDirection(double heading){
 	}
 }
 
+void DrivePID::DriveTurning(double driverY){
+	std::shared_ptr<NetworkTable> table = NetworkTable::GetTable("limelight");
+	table->PutNumber("pipeline", 2);
+	UpdateLimelight();
+	float kp = -0.05f;
+	float min_command = 0.05f;
+	double yaw = GetYaw();
+	//if yaw changes BIG wrong way, limit correction. only lock on boxes in acceptable range. back up??
+	float heading_error = -m_targetX;
+	float steering_adjust= 0.0f;
+
+	if(m_targetX == 0){
+		steering_adjust = driverY;
+	}
+	else if(m_targetX > 3){
+		steering_adjust = kp*heading_error - min_command;
+	}
+	else if(m_targetX < -3){
+		steering_adjust = kp*heading_error + min_command;
+	}
+
+	SetSidePower(driverY-steering_adjust, driverY+steering_adjust);
+}
+
 void DrivePID::UpdateLimelight(){
 
 	std::shared_ptr<NetworkTable> table = NetworkTable::GetTable("limelight");
-	table->PutNumber("ledMode", 1);
+	table->PutNumber("ledMode", 0);
 
 	m_targetX = table->GetNumber("tx", 0);
 	m_targetY = table->GetNumber("ty", 0);
@@ -268,22 +293,6 @@ void DrivePID::UpdateLimelight(){
 }
 
 double DrivePID::AdjustWithVision(){
-//	UpdateLimelight();
-
-//	float kp = -0.1f;
-//	float min_command = 0.05f;
-//
-//	float heading_error = -m_targetX;
-//	float steering_adjust= 0.0f;
-//
-//	if(m_targetX > 3){
-//		steering_adjust = kp*heading_error - min_command;
-//	}
-//	else if(m_targetX < -3){
-//		steering_adjust = kp*heading_error + min_command;
-//	}
-//
-//	SetSidePower(-steering_adjust, steering_adjust);
 
 	double yaw = GetYaw();
 	double adjustment = atan(m_targetX/76)*180/3.14;
@@ -302,30 +311,14 @@ double DrivePID::AdjustWithVision(){
 		m_newHeading = yaw;
 	}
 
-//	if (m_targetY < 10){
-//		std::cout << "Too far away";
-//		newPower = power-(m_targetY/100);
-//	}
-//	else if(m_targetY > 12){
-//		std::cout << "Too close";
-//		newPower = -power+(m_targetY/100);
-//	}
-//	else if(m_area < 8){
-//		std::cout << "Too far away 2";
-//		newPower = -power-(m_targetY/100);
-//	}
-//	else if(m_area > 12){
-//		std::cout << "Too close 2";
-//		newPower = power+(m_targetY/100);
-//	}
-//	else{
-//		newPower = power;
-//	}
-
 	std::cout << "  Yaw: " << GetYaw() << "  New Heading:  " << m_newHeading << std::endl;
 	return m_newHeading;
 	//DriveStraight(newPower, newHeading);
 	//Rotate(newHeading);
+}
+
+double DrivePID::OutputX(){
+	return m_targetX;
 }
 
 bool DrivePID::IsTargetFound(){
