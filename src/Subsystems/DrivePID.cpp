@@ -202,6 +202,90 @@ void DrivePID::Rotate(double heading) {
 	}
 }
 
+void DrivePID::DriveDistance(double distance, double power, double heading){
+	double yaw = GetYaw();
+	SetDirection(heading);
+	double correction = fabs(GetPIDOutput());
+	double velocity = fabs(GetVelocity());
+	double m_distanceTraveled = GetDistance();
+	bool direction;
+
+	double distanceDiff = fabs(m_distanceTraveled - distance);
+	double slowdownConst = 0.2;
+
+	//Decide on direction
+	if(yaw > 0){
+		if((heading < yaw)&& (heading > (-180 + yaw))){
+			direction = 1; //Left
+		}
+		else{
+			direction = 0;
+		}
+	}
+	else if(yaw < 0){
+		if((heading > yaw)&& (heading < (180 + yaw))){
+			direction = 0; //Right
+		}
+		else{
+			direction = 1;
+		}
+	}
+
+	if(driveState == c_accelerate){
+		DriveAccelerate(distance, power);
+	}
+	else if(driveState == c_deaccelerate){
+		DriveDeaccelerate(distance, power);
+	}
+	else{
+		DriveStop(power);
+	}
+}
+
+void DrivePID::DriveAccelerate(double distance, double power){
+	SetSidePower(power, power);
+	double distanceDiff = fabs(fabs(GetDistance())-(fabs(distance)));
+
+	double velocity = fabs(GetVelocity());
+	double stoppingDist = velocity*1.35;
+
+	std::cout << "   Drive Accelerate   " << "   Distance Difference:  " << distanceDiff
+			<< "  Stopping Distance:  " << stoppingDist << std::endl;
+
+	if(distanceDiff <= stoppingDist){
+		driveState = c_deaccelerate;
+		std::cout << "  Change to Deaccelerate  " << std::endl;
+	}
+}
+
+void DrivePID::DriveDeaccelerate(double distance, double power){
+	std::cout << "   Drive Deaccelerate   " << std::endl;
+	SetSidePower(0, 0);
+	double velocity = fabs(GetVelocity());
+	if(velocity < (10)){
+		std::cout << "   Change to Drive Stop    " << std::endl;
+		driveState = c_stop;
+	}
+}
+
+void DrivePID::DriveStop(double distance){
+	double velocity = GetVelocity();
+	double inverseVelocity = 1/(GetVelocity()/2);
+	std::cout << "   Drive Stop   " << " Inverse Velocity:  " << inverseVelocity << std::endl;
+
+	if(velocity > 1){
+		SetSidePower(-inverseVelocity, -inverseVelocity);
+	}
+	else if(velocity < -1){
+		SetSidePower(-inverseVelocity, -inverseVelocity);
+	}
+	else{
+		SetSidePower(0, 0);
+	}
+}
+
+
+
 void DrivePID::Shift(bool state) {
 	shifter.get()->Set(state);
 	std::cout << " ---------------------DRIVE SHIFT _______________________   " << state<<  std::endl;
@@ -223,6 +307,25 @@ double DrivePID::GetLeftEncoder() {
 
 	return distance;
 }
+
+double DrivePID::GetDistance(){
+	double rightDist = GetRightEncoder();
+	double leftDist = GetLeftEncoder()*(-1);
+	double m_distanceTraveled;
+	if(rightDist < 0 ){
+		m_distanceTraveled =  (rightDist+leftDist)/2;
+	}
+	else if (rightDist > 0){
+		m_distanceTraveled = ((rightDist+leftDist)/2)*(-1);
+	}
+	else{
+		m_distanceTraveled = 0;
+	}
+
+	return m_distanceTraveled;
+}
+
+
 
 void DrivePID::ZeroEncoders(){
 	rightEncoder->Reset();

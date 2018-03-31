@@ -81,11 +81,16 @@ class DrivePID: public frc::PIDSubsystem {
 	void SetSidePower(double left, double right);
 	void DriveCurve(double power, double heading);
 	void DriveStraight(double power, double heading);
+	void DriveDistance(double distance, double power, double heading);
+	void DriveAccelerate(double distance, double power);
+	void DriveDeaccelerate(double distance, double power);
+	void DriveStop(double distance);
 	void Rotate(double heading);
 	void Shift(bool state);
 
 	double GetRightEncoder();
 	double GetLeftEncoder();
+	double GetDistance();
 	void ZeroEncoders();
 	float GetYaw();
 	void ZeroYaw();
