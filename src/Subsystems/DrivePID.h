@@ -19,6 +19,11 @@
 
 #define PracticeBot
 
+const int c_accelerate = 0;
+const int c_deaccelerate = 1;
+const int c_stop = 2;
+
+
 #ifdef PracticeBot
 
 const double c_calibrationValue = 0;
@@ -101,7 +106,9 @@ class DrivePID: public frc::PIDSubsystem {
 	double AdjustWithVision();
 	double OutputX();
 	bool IsTargetFound();
+	double GetVelocity();
 	double m_newHeading;
+	int driveState;
 
 private:
 

@@ -433,3 +433,15 @@ bool DrivePID::IsTargetFound(){
 		return false;
 	}
 }
+
+
+double DrivePID::GetVelocity(){
+	double encoder_LRate = leftEncoder->GetRate(); //returns ticks / second
+	double encoder_RRate = rightEncoder->GetRate()*(-1);
+	double averageEncoderRate = (encoder_LRate + encoder_RRate) / 2;
+	double velocity = averageEncoderRate*6.05/c_CPR; //turns ticks / second into inches / second
+//	std::cout << " Average Encoder Rate:  " << averageEncoderRate << "  Left Rate: " << encoder_LRate
+//				<< "  Right Rate:  " << encoder_RRate << " Velocity: " << velocity ;
+	return velocity;
+}
+

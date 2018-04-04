@@ -62,21 +62,6 @@ void AutoDistance::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDistance::IsFinished() {
-//	if((m_power > 0) && (m_distanceTraveled > m_distance)){
-//		Robot::drivePID->SetSidePower(-1,-1);
-//		//Wait(.1);
-//		return true;
-//	}
-//	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
-//		Robot::drivePID->SetSidePower(-m_power, -m_power);
-//		std::cout << "  END 2  " << std::endl;
-//		Wait(0.1);
-//		return true;
-//	}
-//	else if(m_power == 0){
-//		return true;
-//	}
-
 	double velocity = fabs(Robot::drivePID.get()->GetVelocity());
 
 	if((velocity < 0.5) && (Robot::drivePID.get()->driveState == 2)){

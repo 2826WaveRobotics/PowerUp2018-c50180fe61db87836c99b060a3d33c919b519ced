@@ -11,7 +11,7 @@
 
 
 #include "LeftScaleAuto.h"
-#include "AutoDrive.h"
+#include "AutoDistance.h"
 #include "AutoCurve.h"
 #include "SetKirby.h"
 #include "WaveWait.h"
@@ -26,18 +26,19 @@
 
 LeftScaleAuto::LeftScaleAuto() {
 
-	//Drive forward to scale
-	AddSequential(new AutoDrive(-40, -0.8, 0));
-	//AddParallel(new SetElbow(160));
-	//AddSequential(new AutoDriveTimed(1, 0, .25 ));
-	AddSequential(new WaveWait(0.5));
-	AddSequential(new AutoRotate(67));
-	AddSequential(new WaveWait(.5));
+	//Drive and prepare for scale
+	AddSequential(new AutoDistance(-150, -0.8, 0));
+//	AddParallel(new SetElbow(160));
+	AddSequential(new WaveWait(0.25));
 	AddSequential(new AutoRotate(90));
-	AddParallel(new SetElevator(5));
-	//AddSequential(new AutoDrive(-10, -0.8, 90));
+//	AddParallel(new SetElevator(55);
+	AddSequential(new WaveWait(.25));
 
 	//Place cube
-	//AddSequential(new SetKirbyKlaw(true));
+//	AddSequential(new SetKirby(-0.8, 1));
+//	AddSequential(new WaveWait(1);
 
+	//Back away
+//	AddSequential(new AutoDistance(15, -0.5, 90));
+//	AddSequential(new SetElevator(0));
  }
