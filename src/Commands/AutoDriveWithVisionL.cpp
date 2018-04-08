@@ -78,16 +78,23 @@ void AutoDriveWithVisionL::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDriveWithVisionL::IsFinished() {
-	if((m_power > 0) && (m_distanceTraveled > m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
-		std::cout << "  1  " << std::endl;
+	double yaw = Robot::drivePID.get()->GetYaw();
+
+	if(((m_rotate + 5) > yaw) && ((m_rotate - 5) < yaw)){
+		//Robot::drivePID->SetSidePower(-1,1);
+		std::cout << " FINAL: " << fabs(Robot::drivePID->GetYaw()) << std::endl;
 		return true;
 	}
-	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
-		std::cout << "  2  " << std::endl;
-		return true;
-	}
+//	if((m_power > 0) && (m_distanceTraveled > m_distance)){
+//		Robot::drivePID->SetSidePower(-1,1);
+//		std::cout << "  1  " << std::endl;
+//		return true;
+//	}
+//	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
+//		Robot::drivePID->SetSidePower(-1,1);
+//		std::cout << "  2  " << std::endl;
+//		return true;
+//	}
 	else if(IsTimedOut()){
 		std::cout << "  3  " << std::endl;
 		return true;

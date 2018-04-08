@@ -9,7 +9,7 @@
 // it from being updated in the future.
 
 
-
+//The only thing this subsystem does is run the compressor when needed.
 
 #include "CompressorSubsystem.h"
 #include "../RobotMap.h"

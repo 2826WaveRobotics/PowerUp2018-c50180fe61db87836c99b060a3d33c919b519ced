@@ -71,22 +71,23 @@ bool AutoDrive::IsFinished() {
 			return true;
 		}
 	}
-
-	if((m_power > 0) && (m_distanceTraveled > m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
-		return true;
-	}
-	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
-		Robot::drivePID->SetSidePower(-1,1);
-		return true;
-	}
-
-	else if(m_power == 0){
-		Robot::drivePID->SetSidePower(-1,1);
-		return true;
-	}
 	else{
-		return false;
+		if((m_power > 0) && (m_distanceTraveled > m_distance)){
+			Robot::drivePID->SetSidePower(-1,1);
+			return true;
+		}
+		else if((m_power < 0) && (m_distanceTraveled < m_distance)){
+			Robot::drivePID->SetSidePower(-1,1);
+			return true;
+		}
+
+		else if(m_power == 0){
+			Robot::drivePID->SetSidePower(-1,1);
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 }

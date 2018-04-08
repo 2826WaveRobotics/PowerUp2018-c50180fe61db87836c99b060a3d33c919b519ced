@@ -28,19 +28,19 @@
 RightScaleAuto::RightScaleAuto() {
 
 	//Drive and prepare for scale
-	AddSequential(new AutoDistance(-150, -0.8, 0));
-//	AddParallel(new SetElbow(160));
+	AddSequential(new AutoDistance(-286, -0.8, 0));
+	AddParallel(new SetElbow(70));
+	AddSequential(new SetElevator(70));
 	AddSequential(new WaveWait(0.25));
-	AddSequential(new AutoRotate(-90));
-//	AddParallel(new SetElevator(55);
+	AddSequential(new AutoRotate(-55));
 	AddSequential(new WaveWait(.25));
 
 	//Place cube
-//	AddSequential(new SetKirby(-0.8, 1));
-//	AddSequential(new WaveWait(1);
+	AddSequential(new SetKirby(-0.5, 1));
+	AddSequential(new WaveWait(1));
 
 	//Back away
-//	AddSequential(new AutoDistance(15, -0.5, 90));
-//	AddSequential(new SetElevator(0));
+	AddSequential(new AutoDistance(15, 0.5, -45));
+	//AddSequential(new SetElevator(0));
 
  }
