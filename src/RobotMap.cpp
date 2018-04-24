@@ -24,9 +24,9 @@ int klaw = 3;
 
 
 //digital input
-int intakeSwitch = 6;
-int elbowZero = 8;
-int elevatorZero = 7; //This is what we are using
+int intakeSwitch = 7;
+int elbowZero = 4;
+int elevatorZero = 8; //This is what we are using
 int elevatorHigh = 5;
 
 //encoder
@@ -44,7 +44,7 @@ const double c_elevatorCalibration = 1.0;
 //the calibration value is then:  (Final Angle - Start Angle) / (Final Encoder Count - Start Encoder Count)
 const double c_elbowCalibration = 1.0;
 
-#define CompBot
+#define PracticeBot
 
 #ifdef TestChassis
 int CANTalon_driveDriveLeft1	    = 16;
@@ -147,7 +147,7 @@ void RobotMap::init() {
     kirbyKirbyLeft.reset(new WPI_TalonSRX(CANTalon_KirbyIntakeRight));
     
     
-    kirbyKirbyFull.reset(new frc::DigitalInput(6));
+    kirbyKirbyFull.reset(new frc::DigitalInput(intakeSwitch));
     kirbyKirbyFull.get()->SetName("Kirby");
     
     kirbyKirbyKlaw.reset(new frc::Solenoid(0, klaw));

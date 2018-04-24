@@ -29,11 +29,11 @@
 RightSwitchSideAuto::RightSwitchSideAuto() {
 
 	//Drive and prepare for scale
-	AddSequential(new AutoDistance(-167, -0.8, 0));
+	AddSequential(new AutoDistance(-162, -0.8, 0));
 	AddParallel(new SetElbow(140));
 	AddSequential(new SetElevator(35));
 	AddSequential(new WaveWait(0.25));
-	AddSequential(new AutoRotate(-90));
+	AddSequential(new AutoRotate(-70));
 	AddSequential(new WaveWait(.25));
 	AddSequential(new AutoDriveTimed(-0.5, -90, 1));
 

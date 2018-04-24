@@ -19,6 +19,9 @@
 #include "Commands/SetKirbyKlaw.h"
 #include "Commands/SetKirby.h"
 #include "Commands/TestCommand.h"
+#include "Commands/LeftScaleCrossAuto.h"
+#include "Commands/LeftSwitchSideAuto2.h"
+#include "Commands/LeftScaleSwitchAuto.h"
 
 #include <iostream>
 #include "Commands/LeftSwitchExchangeAuto.h"
@@ -28,6 +31,7 @@
 #include "Commands/RightSwitchTimedAuto.h"
 #include "Commands/LeftSwitchTimedAuto.h"
 #include "Commands/LeftScaleAuto.h"
+#include "Commands/LeftScaleAuto2.h"
 #include "Commands/RightScaleAuto.h"
 #include "Commands/AutoDriveTimed.h"
 #include "Commands/AutoDistance.h"
@@ -98,7 +102,8 @@ void Robot::DisabledPeriodic() {
 	//Misc printouts
 	std::cout << " Arm Encoder : " << elbow.get()->GetAngle() << "  Elevator Encoder: "<< elevator.get()->GetHeight() << " Drive Right:  "
 			<< drivePID.get()->GetRightEncoder() << "  Drive Left:  " << drivePID.get()->GetLeftEncoder() << "  Arm Sensor:  "
-			<< kirby.get()->GetSwitch() << "  Elevator Sensor:  " << elevator.get()->IsSensorTripped() << std::endl;
+			<< kirby.get()->GetSwitch() << "  Elevator Sensor:  " << elevator.get()->IsSensorTripped() <<
+			" Gyro: " << drivePID.get()->GetYaw()<< std::endl;
 
 //	std::cout << "Elevator Encoder: " << elevator.get()->GetHeight() <<  "  Elevator Sensor:  " << elevator.get()->IsSensorTripped()
 //			<< "  Raw Elevator Sensor: " << RobotMap::elevatorElevatorZero.get()->Get() << std::endl;
@@ -134,14 +139,14 @@ void Robot::AutonomousInit() {
 			}
 
 			if((m_location == 1) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new LeftSwitchSideAuto();
+				autonomousCommand = new LeftScaleSwitchAuto();
 			}
 			else if((m_location == 2) &&(m_autoType == p_switchPriority)){
 				autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
 			}
 
 			if((m_location == 1) &&(m_autoType == p_scalePriority)){
-				autonomousCommand = new LeftScaleAuto();
+				autonomousCommand = new LeftScaleCrossAuto();
 			}
 			else if((m_location == 2) &&(m_autoType == p_scalePriority)){
 				autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
@@ -254,6 +259,8 @@ void Robot::AutonomousInit() {
 
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	//drivePID.get()->DriveStraight(-0.8, 0);
+	std::cout << " Gyro: " << drivePID.get()->GetYaw() << std::endl;;
 
 }
 
@@ -299,16 +306,21 @@ void Robot::TeleopPeriodic() {
 
 	if(shiftOn){
 		drivePID.get()->Shift(true);
+		std::cout << " Shift true " << std::endl;
 	}
 	else if(shiftOff){
 			drivePID.get()->Shift(false);
 		}
-	else if(isShifted){
+
+
+	if(isShifted){
 		if((elevatorHeight > 0) && (fabs(driverY) > 0.15)) { //only can climb above 0 and down
 			drivePID.get()->ArcadeDrive(fabs(driverY), 0);
+			std::cout << " Is shifted - climb " << std::endl;
 		}
 		else{
 			drivePID.get()->ArcadeDrive(0, 0);
+			std::cout << " Is shifted - 0 " << std::endl;
 		}
 	}
 	else if(visionOR){
@@ -356,22 +368,34 @@ void Robot::TeleopPeriodic() {
 	else if(((elevatorSpeed > -0.15) && (elevatorSpeed < 0)) || (( elevatorSpeed  < 0.15) && (elevatorSpeed > 0))
 			|| (elevatorSpeed == 0)){
 		elevator.get()->DisablePID();
-		elevator.get()->SetElevatorSpeed(0);
+		elevator.get()->SetElevatorSpeed(0.1);
+		std::cout << " constant .1 " << std::endl;
 	}
 	else if(RobotMap::drivePIDShifter->Get()){
 		elevator.get()->SetElevatorSpeed(0);
+		std::cout << " shift 0 " << std::endl;
 	}
 	else{
 		if((elevatorHeight < 70) && (elevatorSpeed > 0.15)){
 			if((elevatorHeight > 60)&& (elevatorSpeed > 0.6)){
 				elevatorSpeed = 0.6;
+				std::cout << " 0.6 up " << std::endl;
 			}
 			elevator.get()->DisablePID();
 			elevator.get()->SetElevatorSpeed(elevatorSpeed);
+			std::cout << " normal " << std::endl;
 		}
+//		if((elevatorHeight > 0) && (elevatorSpeed < -0.15)){
+//			if((elevatorHeight < 20)&& (elevatorSpeed < -.6)){
+//				elevatorSpeed = -0.6;
+//			}
+//			elevator.get()->DisablePID();
+//			elevator.get()->SetElevatorSpeed(elevatorSpeed);
+//		}
 		if((elevatorHeight > 0) && (elevatorSpeed < -0.15)){
 			elevator.get()->DisablePID();
 			elevator.get()->SetElevatorSpeed(elevatorSpeed);
+			std::cout << " normal 2 " << std::endl;
 		}
 	}
 
@@ -408,7 +432,7 @@ void Robot::TeleopPeriodic() {
 			elbow.get()->SetAngle(155);
 		}
 		if(operatorX){
-			elbow.get()->SetAngle(15);
+			elbow.get()->SetAngle(8);
 		}
 	}
 	else{

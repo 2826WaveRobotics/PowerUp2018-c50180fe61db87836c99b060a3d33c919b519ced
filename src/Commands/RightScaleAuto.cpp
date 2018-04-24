@@ -33,6 +33,7 @@ RightScaleAuto::RightScaleAuto() {
 	AddSequential(new SetElevator(70));
 	AddSequential(new WaveWait(0.25));
 	AddSequential(new AutoRotate(-55));
+	AddSequential(new SetElbow(60));
 	AddSequential(new WaveWait(.25));
 
 	//Place cube
@@ -40,7 +41,7 @@ RightScaleAuto::RightScaleAuto() {
 	AddSequential(new WaveWait(1));
 
 	//Back away
-	AddSequential(new AutoDistance(15, 0.5, -45));
-	//AddSequential(new SetElevator(0));
-
+	AddSequential(new AutoDistance(24, 0.7, -55));
+	//AddSequential(new WaveWait(.25));
+	AddSequential(new SetElevator(0));
  }

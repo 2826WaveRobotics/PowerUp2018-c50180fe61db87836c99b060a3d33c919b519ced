@@ -87,7 +87,7 @@ class DrivePID: public frc::PIDSubsystem {
 	void DriveCurve(double power, double heading);
 	void DriveStraight(double power, double heading);
 	void DriveDistance(double distance, double power, double heading);
-	void DriveAccelerate(double distance, double power);
+	void DriveAccelerate(double distance, double power, double heading);
 	void DriveDeaccelerate(double distance, double power);
 	void DriveStop(double distance);
 	void Rotate(double heading);

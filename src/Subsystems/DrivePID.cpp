@@ -217,11 +217,11 @@ void DrivePID::Rotate(double heading) {
 }
 
 void DrivePID::DriveDistance(double distance, double power, double heading){
-	double yaw = GetYaw();
-	SetDirection(heading);
+	//double yaw = GetYaw();
+	SetDirection(heading+1);
 
 	if(driveState == c_accelerate){
-		DriveAccelerate(distance, power);
+		DriveAccelerate(distance, power, heading);
 	}
 	else if(driveState == c_deaccelerate){
 		DriveDeaccelerate(distance, power);
@@ -231,8 +231,9 @@ void DrivePID::DriveDistance(double distance, double power, double heading){
 	}
 }
 
-void DrivePID::DriveAccelerate(double distance, double power){
-	SetSidePower(power, power);
+void DrivePID::DriveAccelerate(double distance, double power, double heading){
+	//SetSidePower(power, power);
+	DriveStraight(power, heading+1);
 	double distanceDiff = fabs(fabs(GetDistance())-(fabs(distance)));
 
 	double velocity = fabs(GetVelocity());
@@ -262,10 +263,10 @@ void DrivePID::DriveStop(double distance){
 	double inverseVelocity = 1/(GetVelocity()/2);
 	std::cout << "   Drive Stop   " << " Inverse Velocity:  " << inverseVelocity << std::endl;
 
-	if(velocity > 1){
+	if(velocity > 2){
 		SetSidePower(-inverseVelocity, -inverseVelocity);
 	}
-	else if(velocity < -1){
+	else if(velocity < -2){
 		SetSidePower(-inverseVelocity, -inverseVelocity);
 	}
 	else{
@@ -423,8 +424,8 @@ bool DrivePID::IsTargetFound(){
 
 
 double DrivePID::GetVelocity(){
-	double encoder_LRate = leftEncoder->GetRate(); //returns ticks / second
-	double encoder_RRate = rightEncoder->GetRate()*(-1);
+	double encoder_LRate = leftEncoder->GetRate()*(-1); //returns ticks / second
+	double encoder_RRate = rightEncoder->GetRate(); // *-1 for comp bot
 	double averageEncoderRate = (encoder_LRate + encoder_RRate) / 2;
 	double velocity = averageEncoderRate*6.05/c_CPR; //turns ticks / second into inches / second
 //	std::cout << " Average Encoder Rate:  " << averageEncoderRate << "  Left Rate: " << encoder_LRate
