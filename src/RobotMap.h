@@ -31,13 +31,6 @@ public:
 	static std::shared_ptr<WPI_TalonSRX> driveLeft2;
 	static std::shared_ptr<WPI_TalonSRX> driveLeft3;
 	static std::shared_ptr<frc::SpeedControllerGroup> driveLeftDriveGroup;
-	static std::shared_ptr<WPI_TalonSRX> driveRight1;
-	static std::shared_ptr<WPI_TalonSRX> driveRight2;
-	static std::shared_ptr<WPI_TalonSRX> driveRight3;
-	static std::shared_ptr<frc::SpeedControllerGroup> driveRightDriveGroup;
-	static std::shared_ptr<frc::DifferentialDrive> driveDiffDrive;
-	static std::shared_ptr<frc::Encoder> driveLeftEncoder;
-	static std::shared_ptr<frc::Encoder> driveRightEncoder;
 	static std::shared_ptr<frc::Solenoid> driveShifter;
 	static std::shared_ptr<WPI_TalonSRX> kirbyKirbyRight;
 	static std::shared_ptr<WPI_TalonSRX> kirbyKirbyLeft;

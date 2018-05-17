@@ -48,21 +48,27 @@ void Kirby::Periodic() {
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
+//Stop intake
 void Kirby::KirbyStop()
 {
 	kirbyRight.get()->Set(0.0);
 	kirbyLeft.get()->Set(0.0);
 }
+
+//Set intake to a speed
 void Kirby::SetKirby(double speed)
 {
 	kirbyRight.get()->Set(speed);
 	kirbyLeft.get()->Set(-speed);
 }
+
+//Set intake claw
 void Kirby::SetKirbyKlaw(bool on){
 	kirbyKlaw.get()->Set(on);
 
 }
 
+//Check if intake sensor is tripped
 bool Kirby::GetSwitch(){
 	return kirbyFull.get()->Get();
 }

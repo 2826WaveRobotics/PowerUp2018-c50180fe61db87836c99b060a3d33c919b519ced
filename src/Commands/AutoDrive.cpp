@@ -33,34 +33,16 @@ AutoDrive::AutoDrive(double distance, double power, double heading, bool stopWit
 void AutoDrive::Initialize() {
 	Robot::drivePID->SetPIDs(c_straightP, c_straightI, c_straightD);
 	Robot::drivePID.get()->ZeroEncoders();
-	//Robot::drivePID.get()->ZeroYaw();
 	Robot::elevator.get()->SetElevatorSpeed(0);
 	Robot::drivePID.get()->SetDirection(m_heading);
-//	Robot::drivePID->DriveStraight(1, 0);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
 
 	Robot::drivePID->DriveStraight(m_power, m_heading);
-	double rightDist = Robot::drivePID->GetRightEncoder();
-	double leftDist = Robot::drivePID->GetLeftEncoder()*(-1);
 
-	if(rightDist < 0 ){
-		m_distanceTraveled =  (rightDist+leftDist)/2*(-1);
-	}
-	else if (rightDist > 0){
-		m_distanceTraveled = ((rightDist+leftDist)/2)*(-1);
-	}
-	else{
-		m_distanceTraveled = 0;
-	}
-
-
-	std::cout << "Right: " << rightDist << " Left:" << leftDist <<
-			" Distance Traveled: " << m_distanceTraveled <<
-			" Set Distance: " << m_distance
-			<< " Gyro: " << Robot::drivePID.get()->GetYaw() << std::endl;
+	m_distanceTraveled = Robot::drivePID.get()->GetDistance();
 
 }
 
@@ -96,7 +78,6 @@ bool AutoDrive::IsFinished() {
 void AutoDrive::End() {
 	Robot::drivePID->ArcadeDrive(0, 0);
 	Robot::drivePID.get()->ZeroEncoders();
-	//Robot::drivePID.get()->ZeroYaw();
 }
 
 // Called when another command which requires one or more of the same

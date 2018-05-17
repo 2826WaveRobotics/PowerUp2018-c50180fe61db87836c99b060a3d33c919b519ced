@@ -35,12 +35,9 @@ AutoDriveWithVisionL::AutoDriveWithVisionL(double distance, double power, double
 // Called just before this Command runs the first time
 void AutoDriveWithVisionL::Initialize() {
 	Robot::drivePID->SetPIDs(c_straightP, c_straightI, c_straightD);
-	//Robot::drivePID.get()->ZeroYaw();
-	//Robot::drivePID.get()->SetDirection(m_heading);
 	Robot::drivePID.get()->ZeroEncoders();
 	Robot::drivePID.get()->UpdateLimelight();
 	m_rotate = 2.5*Robot::drivePID->AdjustWithVision();
-	//Robot::drivePID.get()->SetDirection(2.5*m_rotate);
 	if(m_rotate > 0 ){
 		m_distance = -5*Robot::drivePID->AdjustWithVision();
 	}
@@ -54,26 +51,7 @@ void AutoDriveWithVisionL::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void AutoDriveWithVisionL::Execute() {
 	Robot::drivePID->DriveStraight(m_power, m_rotate);
-
-	double rightDist = Robot::drivePID->GetRightEncoder();
-	double leftDist = Robot::drivePID->GetLeftEncoder()*(-1);
-
-	if(rightDist < 0 ){
-		m_distanceTraveled =  (rightDist+leftDist)/2*(-1);
-	}
-	else if (rightDist > 0){
-		m_distanceTraveled = ((rightDist+leftDist)/2)*(-1);
-	}
-	else{
-		m_distanceTraveled = 0;
-	}
-
-
-
-	std::cout << "Right: " << rightDist << " Left:" << leftDist <<
-	" Distance Traveled: " << m_distanceTraveled <<
-	" Set Distance: " << m_distance
-	<< " Gyro: " << Robot::drivePID.get()->GetYaw() << std::endl;
+	m_distanceTraveled = Robot::drivePID->GetDistance();
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -81,20 +59,9 @@ bool AutoDriveWithVisionL::IsFinished() {
 	double yaw = Robot::drivePID.get()->GetYaw();
 
 	if(((m_rotate + 5) > yaw) && ((m_rotate - 5) < yaw)){
-		//Robot::drivePID->SetSidePower(-1,1);
 		std::cout << " FINAL: " << fabs(Robot::drivePID->GetYaw()) << std::endl;
 		return true;
 	}
-//	if((m_power > 0) && (m_distanceTraveled > m_distance)){
-//		Robot::drivePID->SetSidePower(-1,1);
-//		std::cout << "  1  " << std::endl;
-//		return true;
-//	}
-//	else if((m_power < 0) && (m_distanceTraveled < m_distance)){
-//		Robot::drivePID->SetSidePower(-1,1);
-//		std::cout << "  2  " << std::endl;
-//		return true;
-//	}
 	else if(IsTimedOut()){
 		std::cout << "  3  " << std::endl;
 		return true;
@@ -108,7 +75,6 @@ bool AutoDriveWithVisionL::IsFinished() {
 void AutoDriveWithVisionL::End() {
 	Robot::drivePID->ArcadeDrive(0, 0);
 	Robot::drivePID.get()->ZeroEncoders();
-	//Robot::drivePID.get()->ZeroYaw();
 }
 
 // Called when another command which requires one or more of the same

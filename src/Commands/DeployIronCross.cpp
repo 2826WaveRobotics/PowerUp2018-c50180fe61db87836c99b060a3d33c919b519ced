@@ -32,8 +32,6 @@ void DeployIronCross::Initialize() {
 void DeployIronCross::Execute() {
 
 	Robot::ironCross.get()->DeployIronCross();
-	Wait(2);
-	Robot::ironCross.get()->RetractIronCross();
 
 }
 

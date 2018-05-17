@@ -8,6 +8,7 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
+//Unusued
 
 #include "DeployTRexArms.h"
 
@@ -30,8 +31,6 @@ void DeployTRexArms::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void DeployTRexArms::Execute() {
 	Robot::ironCross.get()->DeployTRexArms(true);
-	Wait(2);
-	Robot::ironCross.get()->DeployTRexArms(false);
 
 }
 

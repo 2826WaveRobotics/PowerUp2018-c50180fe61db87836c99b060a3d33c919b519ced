@@ -42,10 +42,11 @@ LeftScaleAuto2::LeftScaleAuto2() {
 	AddParallel(new SetElbow(0));
 	AddParallel(new SetElevator(50));
 	AddSequential(new AutoDistance(10, 0.7, 55));
-	AddSequential(new SetKirbyKlaw(true));
 	AddParallel(new SetElevator(0));
 	AddParallel(new SetElbow(160));
 	AddParallel(new AutoRotate(150));
+	AddSequential(new SetElevator(0));
+	AddParallel(new SetKirbyKlaw(true));
 
 	//Drive and grab to cube 2
 	AddSequential(new AutoDrive(-100, -0.4, 150, true));
@@ -64,6 +65,7 @@ LeftScaleAuto2::LeftScaleAuto2() {
 	//Place cube
 	AddSequential(new SetKirby(-0.5, 0.5));
 
+	//Drive away and drive to cube 3 (runs out of time)
 	AddSequential(new AutoDistance(50, 0.8, 178));
 	AddSequential(new AutoRotate(140));
 	AddParallel(new SetElevator(0));

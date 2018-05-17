@@ -31,12 +31,12 @@ LeftScaleCrossAuto::LeftScaleCrossAuto() {
 	//AddParallel(new SetElevator(30));
 	//AddParallel(new SetElbow(30));
 	AddParallel(new SetElbow(60));
-	AddSequential(new AutoDistance(-230, -.9, 0));
+	AddSequential(new AutoDistance(-240, -.9, 0));
 	//AddParallel(new SetElevator(70));
 	AddSequential(new AutoRotate(60));
 
 	AddParallel(new SetElevator(40));
-	AddSequential(new AutoDistance(-212, -.9, 90));
+	AddSequential(new AutoDistance(-230, -.9, 90));
 
 	AddSequential(new AutoRotate(20));
 	AddParallel(new SetElevator(65));
@@ -45,7 +45,7 @@ LeftScaleCrossAuto::LeftScaleCrossAuto() {
 	//AddSequential(new WaveWait(1));
 
 	//Place cube
-	AddSequential(new SetKirby(-0.3, 0.5));
+	AddSequential(new SetKirby(-0.8, 0.5));
 
 //	//Back away
 //	AddParallel(new SetElbow(0));

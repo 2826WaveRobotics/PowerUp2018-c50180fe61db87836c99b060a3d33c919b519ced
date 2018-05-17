@@ -8,6 +8,7 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
+//Unusued curve command
 
 #include "AutoCurve.h"
 #include <cmath>

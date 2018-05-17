@@ -26,11 +26,8 @@ AutoRotate::AutoRotate(double rotate): frc::Command() {
 
 // Called just before this Command runs the first time
 void AutoRotate::Initialize() {
-	//Robot::drivePID->ZeroYaw();
-	//Robot::drivePID->ZeroEncoders();
 	Robot::drivePID->SetPIDs(.0085, c_straightI, c_straightD);
 	Robot::drivePID->SetDirection(m_rotate);
-	//Robot::drivePID->Rotate(0, m_power, m_rotate);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -38,18 +35,12 @@ void AutoRotate::Execute() {
 
 	Robot::drivePID.get()->Rotate(m_rotate);
 
-	std::cout << /*"Correction: " << correction << "\tLeft: " <<
-			correctedLeftPower << "\tRight: " << correctedRightPower  <<*/
-			" Goal: " << m_rotate << " Yaw: " << fabs(Robot::drivePID->GetYaw());
-
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoRotate::IsFinished() {
 	double yaw = Robot::drivePID->GetYaw();
 	if(((m_rotate + 5) > yaw) && ((m_rotate - 5) < yaw)){
-		//Robot::drivePID->SetSidePower(-1,1);
-		std::cout << " FINAL: " << fabs(Robot::drivePID->GetYaw()) << std::endl;
 		return true;
 	}
 	else{

@@ -37,11 +37,9 @@ AutoDistance::AutoDistance(double distance, double power, double heading, double
 void AutoDistance::Initialize() {
 	Robot::drivePID->SetPIDs(c_straightP, c_straightI, c_straightD);
 	Robot::drivePID.get()->ZeroEncoders();
-	//Robot::drivePID.get()->ZeroYaw();
 	Robot::elevator.get()->SetElevatorSpeed(0);
 	Robot::drivePID.get()->SetDirection(m_heading);
 	Robot::drivePID.get()->driveState = 0; //0 = c_accelerate in DrivePID
-//	Robot::drivePID->DriveStraight(1, 0);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -52,12 +50,6 @@ void AutoDistance::Execute() {
 	m_distanceTraveled = Robot::drivePID.get()->GetDistance();
 	double velocity = Robot::drivePID.get()->GetVelocity();
 
-
-	std::cout << " Distance Traveled: " << m_distanceTraveled <<
-			" Set Distance: " << m_distance
-			<< " Gyro: " << Robot::drivePID.get()->GetYaw()
-			<< " Velocity:  " << velocity << std::endl;
-
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -65,14 +57,7 @@ bool AutoDistance::IsFinished() {
 	double velocity = fabs(Robot::drivePID.get()->GetVelocity());
 
 	if((velocity < 0.5) && (Robot::drivePID.get()->driveState == 2)){
-		if((m_power > 0)){
-			std::cout << "True - power greater than 0" << std::endl;
-			return true;
-		}
-		else{
-			std::cout << "True - power less than 0" << std::endl;
-			return true;
-		}
+		return true;
 	}
 	else if(IsTimedOut()){
 		return true;
@@ -86,8 +71,6 @@ bool AutoDistance::IsFinished() {
 // Called once after isFinished returns true
 void AutoDistance::End() {
 	Robot::drivePID->SetSidePower(0, 0);
-	//Robot::drivePID.get()->ZeroEncoders();
-	//Robot::drivePID.get()->ZeroYaw();
 }
 
 // Called when another command which requires one or more of the same

@@ -28,52 +28,123 @@
 RightSwitchExchangeAuto::RightSwitchExchangeAuto() {
 
 	//Drive forward to switch
-	AddSequential(new AutoDistance(-5, -.5, 0));
-	AddSequential (new AutoRotate(37));
-	AddSequential(new SetElbow(140));
-	AddParallel(new SetElevator(40));
-	AddSequential(new AutoDistance(-105, -0.8, 37));
+	AddParallel(new SetElbow(145));
+	AddSequential(new AutoDistance(-10, -0.8, 0));
+	AddSequential(new AutoRotate(34));
+	AddParallel(new SetElevator(35));
+	AddSequential(new AutoDistance(-100, -.8, 34));
 
 	//Prepare and place cube
-	AddSequential(new AutoDriveTimed(-0.5, 0, 1));
-	AddSequential(new WaveWait(0.25));
+
+	AddSequential(new AutoRotate(0));
+	AddSequential(new AutoDriveTimed(-0.5, 0, .5));
 	AddSequential(new SetKirbyKlaw(true));
 	AddSequential(new WaveWait(0.25));
 
 	//Back up and drive to cube
-	AddSequential(new AutoRotate(40));
-	AddSequential(new SetElbow(160));
-	AddSequential(new AutoDistance(20, 0.8, 40));
-	AddSequential(new SetElevator(0));
-	AddSequential(new WaveWait(0.25));
-	AddSequential(new AutoDistance(20, 0.4, -5));
+	AddParallel(new SetElbow(160));
+	AddSequential(new AutoRotate(37));
+	AddParallel(new SetElevator(0));
+	AddSequential(new AutoDistance(100, 0.8, 37));
 	AddSequential(new AutoRotate(0));
-//	AddSequential(new AutoDrive(10, 0.4, -5));
-//	AddSequential(new WaveWait(.25));
-//	AddSequential(new AutoDriveWithVision(-20, -0.4, 3));
-	//AddSequential(new AutoRotate(0));
-//	AddParallel(new SetKirby(0.8, 0.5));
+
+	//Acquire cube
+	AddSequential(new AutoDrive(-40, -0.5, 0, true));
+	AddParallel(new SetKirby(0.7, 0.5));
+	AddSequential(new SetKirbyKlaw(false));
+	AddSequential(new SetKirby(0.7, 0.75));
+
+	//Drive to switch
+	AddSequential(new AutoRotate(37));
+	AddParallel(new SetElevator(35));
+	AddSequential(new AutoDistance(-100, -0.8, 37));
+
+	//Place cube
+	AddSequential(new AutoDriveTimed(-0.3, 0, 1.25));
+	AddSequential(new SetKirbyKlaw(true));
+	AddSequential(new WaveWait(0.25));
+
+//	//Drive forward to switch
+//	AddParallel(new SetElevator(35));
+//	AddParallel(new SetElbow(145));
+//	AddSequential(new AutoDistance(-100, -.8, 37));
 //
-//	//Acquire Cube
-//	AddSequential(new SetElevator(-5));
-//	AddParallel(new SetKirby(0.8, 0.5));
-//	AddSequential(new AutoDrive(-25, -0.8, 0, true));
-//	AddParallel(new SetKirby(0.8, 0.5));
-//	AddSequential(new SetKirby(0.8, 0.5));
-//	AddSequential(new SetKirbyKlaw(false));
-//	AddParallel(new SetKirby(0.8, 0.5));
+//	//Prepare and place cube
+//	AddSequential(new AutoDriveTimed(-0.3, 0, 1.25));
+//	AddSequential(new SetKirbyKlaw(true));
+//	AddSequential(new WaveWait(0.25));
 //
-//	//Drive to switch and prepare to place cube
-//	AddSequential(new AutoDrive(20, 0.5, 0));
-//	AddParallel(new SetElevator(20));
-//	AddSequential(new AutoRotate(30));
-//	AddSequential(new AutoDrive(-35, -0.8, 30));
-//	//AddParallel(new SetElbow(145));
-//	AddSequential(new WaveWait(0.5));
+//	//Back up and drive to cube
+//	AddParallel(new SetElbow(160));
+//	AddSequential(new AutoRotate(43));
+//	AddParallel(new SetElevator(0));
+//	AddSequential(new AutoDistance(100, 0.8, 43));
 //	AddSequential(new AutoRotate(0));
 //
+//	//Acquire cube
+//	AddSequential(new AutoDrive(-40, -0.5, 0, true));
+//	AddParallel(new SetKirby(0.7, 0.5));
+//	AddSequential(new SetKirbyKlaw(false));
+//	AddSequential(new SetKirby(0.7, 0.75));
+//
+//	//Drive to switch
+//	AddSequential(new AutoRotate(43));
+//	AddParallel(new SetElevator(35));
+//	AddSequential(new AutoDistance(100, 0.8, 43));
+//
 //	//Place cube
-//	AddSequential(new AutoDriveTimed(-0.3, 0, .7));
+//	AddSequential(new AutoDriveTimed(-0.3, 0, 1.25));
 //	AddSequential(new SetKirbyKlaw(true));
+//	AddSequential(new WaveWait(0.25));
+//
+//
+////	//Drive forward to switch
+////	AddSequential(new AutoDistance(-5, -.5, 0));
+////	AddSequential (new AutoRotate(37));
+////	AddSequential(new SetElbow(140));
+////	AddParallel(new SetElevator(40));
+////	AddSequential(new AutoDistance(-105, -0.8, 37));
+////
+////	//Prepare and place cube
+////	AddSequential(new AutoDriveTimed(-0.5, 0, 1));
+////	AddSequential(new WaveWait(0.25));
+////	AddSequential(new SetKirbyKlaw(true));
+////	AddSequential(new WaveWait(0.25));
+////
+////	//Back up and drive to cube
+////	AddSequential(new AutoRotate(40));
+////	AddSequential(new SetElbow(160));
+////	AddSequential(new AutoDistance(20, 0.8, 40));
+////	AddSequential(new SetElevator(0));
+////	AddSequential(new WaveWait(0.25));
+////	AddSequential(new AutoDistance(20, 0.4, -5));
+////	AddSequential(new AutoRotate(0));
+////	AddSequential(new AutoDrive(10, 0.4, -5));
+////	AddSequential(new WaveWait(.25));
+////	AddSequential(new AutoDriveWithVision(-20, -0.4, 3));
+//	//AddSequential(new AutoRotate(0));
+////	AddParallel(new SetKirby(0.8, 0.5));
+////
+////	//Acquire Cube
+////	AddSequential(new SetElevator(-5));
+////	AddParallel(new SetKirby(0.8, 0.5));
+////	AddSequential(new AutoDrive(-25, -0.8, 0, true));
+////	AddParallel(new SetKirby(0.8, 0.5));
+////	AddSequential(new SetKirby(0.8, 0.5));
+////	AddSequential(new SetKirbyKlaw(false));
+////	AddParallel(new SetKirby(0.8, 0.5));
+////
+////	//Drive to switch and prepare to place cube
+////	AddSequential(new AutoDrive(20, 0.5, 0));
+////	AddParallel(new SetElevator(20));
+////	AddSequential(new AutoRotate(30));
+////	AddSequential(new AutoDrive(-35, -0.8, 30));
+////	//AddParallel(new SetElbow(145));
+////	AddSequential(new WaveWait(0.5));
+////	AddSequential(new AutoRotate(0));
+////
+////	//Place cube
+////	AddSequential(new AutoDriveTimed(-0.3, 0, .7));
+////	AddSequential(new SetKirbyKlaw(true));
 
  }

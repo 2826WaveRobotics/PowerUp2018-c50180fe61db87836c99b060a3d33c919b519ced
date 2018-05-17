@@ -8,34 +8,28 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
+#include <iostream>
 
 #include "Robot.h"
-#include "Commands/AutoCurve.h"
-#include "Commands/AutoDrive.h"
-#include "Commands/TestCurve.h"
-#include "Commands/AutoRotate.h"
-#include "Commands/SetElbow.h"
-#include "Commands/Z_Command.h"
-#include "Commands/SetKirbyKlaw.h"
-#include "Commands/SetKirby.h"
-#include "Commands/TestCommand.h"
-#include "Commands/LeftScaleCrossAuto.h"
-#include "Commands/LeftSwitchSideAuto2.h"
-#include "Commands/LeftScaleSwitchAuto.h"
 
-#include <iostream>
-#include "Commands/LeftSwitchExchangeAuto.h"
+#include "Commands/Z_Command.h"
+#include "Commands/AutoDistance.h"
+
+#include "Commands/RightScaleAuto.h"
+#include "Commands/RightScaleAuto2.h"
 #include "Commands/RightSwitchExchangeAuto.h"
-#include "Commands/LeftSwitchSideAuto.h"
+#include "Commands/RightScaleSwitchAuto.h"
 #include "Commands/RightSwitchSideAuto.h"
-#include "Commands/RightSwitchTimedAuto.h"
-#include "Commands/LeftSwitchTimedAuto.h"
+#include "Commands/RightSwitchSideAuto2.h"
+
 #include "Commands/LeftScaleAuto.h"
 #include "Commands/LeftScaleAuto2.h"
-#include "Commands/RightScaleAuto.h"
-#include "Commands/AutoDriveTimed.h"
-#include "Commands/AutoDistance.h"
-#include "Commands/AutoDriveWithVision.h"
+#include "Commands/LeftScaleCrossAuto.h"
+#include "Commands/LeftSwitchExchangeAuto.h"
+#include "Commands/LeftSwitchSideAuto.h"
+#include "Commands/LeftSwitchSideAuto2.h"
+#include "Commands/LeftScaleSwitchAuto.h"
+#include "Commands/LeftSwitchTimedAuto.h"
 
 using namespace nt;
 
@@ -100,15 +94,10 @@ void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 
 	//Misc printouts
-	std::cout << " Arm Encoder : " << elbow.get()->GetAngle() << "  Elevator Encoder: "<< elevator.get()->GetHeight() << " Drive Right:  "
-			<< drivePID.get()->GetRightEncoder() << "  Drive Left:  " << drivePID.get()->GetLeftEncoder() << "  Arm Sensor:  "
-			<< kirby.get()->GetSwitch() << "  Elevator Sensor:  " << elevator.get()->IsSensorTripped() <<
-			" Gyro: " << drivePID.get()->GetYaw()<< std::endl;
-
-//	std::cout << "Elevator Encoder: " << elevator.get()->GetHeight() <<  "  Elevator Sensor:  " << elevator.get()->IsSensorTripped()
-//			<< "  Raw Elevator Sensor: " << RobotMap::elevatorElevatorZero.get()->Get() << std::endl;
-
-	//std::cout << " Gyro: " << drivePID.get()->GetYaw() << std::endl;;
+//	std::cout << " Arm Encoder : " << elbow.get()->GetAngle() << "  Elevator Encoder: "<< elevator.get()->GetHeight() << " Drive Right:  "
+//			<< drivePID.get()->GetRightEncoder() << "  Drive Left:  " << drivePID.get()->GetLeftEncoder() << "  Arm Sensor:  "
+//			<< kirby.get()->GetSwitch() << "  Elevator Sensor:  " << elevator.get()->IsSensorTripped() <<
+//			" Gyro: " << drivePID.get()->GetYaw()<< std::endl;
 
 	Wait(.001);
 }
@@ -121,133 +110,67 @@ void Robot::AutonomousInit() {
 
 	//Select auto type based on preferences table and game data
 	if(m_autoType == p_doNothing){
-	     //autonomousCommand = new Z_Command();
-		 autonomousCommand = new TestCommand();
+	     autonomousCommand = new Z_Command();
 	}
 	else if(m_autoType == p_driveStraight){
 		std::cout << "  drive straihgt " << std::endl;
 	    autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
 	}
-
-	else if(gameData[0] == 'L') {
-		if (gameData[1] == 'L') //LLL
-		{
-			if(m_autoType == p_switchCube){
-				std::cout << "  correct " << std::endl;
-				table->PutNumber("pipeline", 1);
-				autonomousCommand = new LeftSwitchExchangeAuto();
-			}
-
-			if((m_location == 1) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new LeftScaleSwitchAuto();
-			}
-			else if((m_location == 2) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
-			}
-
-			if((m_location == 1) &&(m_autoType == p_scalePriority)){
-				autonomousCommand = new LeftScaleCrossAuto();
-			}
-			else if((m_location == 2) &&(m_autoType == p_scalePriority)){
-				autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
-			}
-
-			if(m_autoType == p_switchTimed){
-				autonomousCommand = new LeftSwitchTimedAuto();
-			}
-
+	else if (m_location == 1) { //Left
+		if ((gameData[0] == 'L') && (gameData[1] == 'L')) { //LLL
+			autonomousCommand = new LeftScaleAuto();
 		}
-		else //LRL
-		{
-			if(m_autoType == p_switchCube){
-				table->PutNumber("pipeline", 1);
-				autonomousCommand = new LeftSwitchExchangeAuto();
-			}
-
-			if((m_location == 1) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new LeftSwitchSideAuto();
-			}
-			else if((m_location == 2) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new RightScaleAuto();
-			}
-
-			if ((m_location == 1) && ( m_autoType == p_scalePriority)){
-				autonomousCommand = new LeftSwitchSideAuto();
-			}
-			else if((m_location == 2) && (m_autoType == p_scalePriority)){
-				autonomousCommand = new RightScaleAuto();
-			}
-
-			if(m_autoType == p_switchTimed){
-				autonomousCommand = new LeftSwitchTimedAuto();
-			}
-
+		else if ((gameData[0] =='R') && (gameData[1]== 'L')) { //RLR
+			autonomousCommand = new LeftScaleAuto();
+		}
+		else if ((gameData[0] == 'L') && (gameData[1] == 'R')) { //LRL
+			autonomousCommand = new LeftSwitchSideAuto2();
+		}
+		else if ((gameData[0] == 'R') && (gameData[1] == 'R')) { //RRR
+			autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
+		}
+		else{
+			autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
 		}
 	}
-	else if (gameData[0] == 'R'){
-		if (gameData[1] == 'R') //RRR
-		{
-			if( m_autoType == p_switchCube ){
-				table->PutNumber("pipeline", 0);
-				autonomousCommand = new RightSwitchExchangeAuto ();
-			}
-
-			if((m_location == 1) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
-			}
-			else if((m_location == 2) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new RightSwitchSideAuto();
-			}
-
-			if((m_location == 1) &&(m_autoType == p_scalePriority)){
-				autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
-			}
-			else if((m_location == 2) &&( m_autoType == p_scalePriority)){
-				autonomousCommand = new RightScaleAuto();
-			}
-
-			if( m_autoType == p_switchTimed){
-				autonomousCommand = new RightSwitchTimedAuto ();
-			}
-
+	else if (m_location == 2) {
+		if ((gameData[0] == 'R') && (gameData[1] == 'R')) { //RRR
+			autonomousCommand = new RightScaleSwitchAuto();
 		}
-		else //RLR
-		{
-			if( m_autoType == p_switchCube ){
-				table->PutNumber("pipeline", 0);
-				autonomousCommand = new RightSwitchExchangeAuto();
-			}
-
-			if((m_location == 1) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new LeftScaleAuto();
-			}
-			else if((m_location == 2) &&(m_autoType == p_switchPriority)){
-				autonomousCommand = new RightSwitchSideAuto();
-			}
-
-			if((m_location == 1) &&( m_autoType == p_scalePriority)){
-				autonomousCommand = new LeftScaleAuto();
-			}
-			else if((m_location == 2) &&(m_autoType == p_scalePriority)){
-				autonomousCommand = new RightSwitchSideAuto();
-			}
-
-			if( m_autoType == p_switchTimed){
-				autonomousCommand = new RightSwitchTimedAuto();
-			}
-
+		else if ((gameData[0] =='L') && (gameData[1]== 'R')) { //LRL
+			autonomousCommand = new RightScaleAuto2();
+		}
+		else if ((gameData[0] == 'R') && (gameData[1] == 'L')) { //RLR
+			autonomousCommand = new RightSwitchSideAuto2();
+		}
+		else if ((gameData[0] == 'L') && (gameData[1] == 'L')) { //LLL
+			autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
+		}
+		else{
+			autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
 		}
 	}
-	else
-	{
-		std::cout << "  else " << std::endl;
+	else if (m_location == 0) {
+		if (gameData[0] == 'L') {
+			autonomousCommand = new LeftSwitchExchangeAuto();
+		}
+		else if (gameData[0] == 'R') {
+			autonomousCommand = new RightSwitchExchangeAuto();
+		}
+		else{
+			autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
+		}
+	}
+	else{
 		autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
 	}
 
+	//Run autonomous mode
 	if (autonomousCommand != nullptr){
 		autonomousCommand->Start();
 	}
 
+	//Zero encoders and gyro
 	drivePID.get()->ZeroEncoders();
 	drivePID.get()->ZeroYaw();
 	elbow.get()->ZeroDegrees();
@@ -259,9 +182,6 @@ void Robot::AutonomousInit() {
 
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-	//drivePID.get()->DriveStraight(-0.8, 0);
-	std::cout << " Gyro: " << drivePID.get()->GetYaw() << std::endl;;
-
 }
 
 void Robot::TeleopInit() {
@@ -269,12 +189,9 @@ void Robot::TeleopInit() {
 	if (autonomousCommand != nullptr)
 		autonomousCommand->Cancel();
 
-	//elbow.get()->ZeroDegrees();
 	drivePID.get()->ZeroYaw();
-	elevator.get()->ZeroHeight();
 	compressorSubsystem->StartCompressor();
 	drivePID.get()->UpdateLimelight();
-	//drivePID.get()->SetPIDs(-0.2, 0, 0);
 
 }
 
@@ -293,6 +210,7 @@ void Robot::TeleopPeriodic() {
 	bool visionOR = oi.get()->getDriver()->GetRawButton(5); //Drive if vision is acting up
 	bool visionAlign = oi.get()->getDriver()->GetRawButton(1); //Turn to cube with vision
 
+	//Deadband
 	if(fabs(driverY) < 0.15){
 		driverY = 0;
 	}
@@ -300,19 +218,21 @@ void Robot::TeleopPeriodic() {
 		driverX = 0;
 	}
 
+	//Deploy buddy climber
 	if(liftDown){
 		ironCross.get()->DeployIronCross();
 	}
 
+	//Shift
 	if(shiftOn){
 		drivePID.get()->Shift(true);
 		std::cout << " Shift true " << std::endl;
 	}
 	else if(shiftOff){
-			drivePID.get()->Shift(false);
-		}
+		drivePID.get()->Shift(false);
+	}
 
-
+	//Drive controls
 	if(isShifted){
 		if((elevatorHeight > 0) && (fabs(driverY) > 0.15)) { //only can climb above 0 and down
 			drivePID.get()->ArcadeDrive(fabs(driverY), 0);
@@ -348,7 +268,8 @@ void Robot::TeleopPeriodic() {
 	int trackpad = oi.get()->getOperatorJS()->GetPOV(0); //Use trackpad to set elevator positions
 	//Up: 0 Right: 20  Down: 70  Left: 40
 
-	double elevatorSpeed = (-1)*oi.get()->getOperatorJS()->GetRawAxis(5); //Control elevator position
+	//Control elevator position
+	double elevatorSpeed = (-1)*oi.get()->getOperatorJS()->GetRawAxis(5);
 	elevator.get()->SensorTriggered();
 
 	if(trackpad != (-1)){
@@ -385,13 +306,6 @@ void Robot::TeleopPeriodic() {
 			elevator.get()->SetElevatorSpeed(elevatorSpeed);
 			std::cout << " normal " << std::endl;
 		}
-//		if((elevatorHeight > 0) && (elevatorSpeed < -0.15)){
-//			if((elevatorHeight < 20)&& (elevatorSpeed < -.6)){
-//				elevatorSpeed = -0.6;
-//			}
-//			elevator.get()->DisablePID();
-//			elevator.get()->SetElevatorSpeed(elevatorSpeed);
-//		}
 		if((elevatorHeight > 0) && (elevatorSpeed < -0.15)){
 			elevator.get()->DisablePID();
 			elevator.get()->SetElevatorSpeed(elevatorSpeed);
@@ -412,6 +326,7 @@ void Robot::TeleopPeriodic() {
 
 	std::cout << " Angle:  " << elbowPosition << std::endl;
 
+	//Elbow controls
 	if(elbowOverride){
 		elbow.get()->ZeroDegrees();
 		if(elbowSpeed < -0.15 || elbowSpeed > 0.15){
@@ -474,9 +389,6 @@ void Robot::TeleopPeriodic() {
 		kirby.get()->SetKirby(driverLTrigger);
 	}
 	else if (rightTrigger < 0.15 && leftTrigger > 0.15){
-//		if(leftTrigger > 0.5){
-//			leftTrigger = 0.5;
-//		}
 		kirby.get()->SetKirby(leftTrigger);
 	}
 	else{
