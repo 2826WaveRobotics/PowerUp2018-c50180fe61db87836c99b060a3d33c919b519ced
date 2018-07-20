@@ -71,7 +71,7 @@ bool AutoDrive::IsFinished() {
 			return false;
 		}
 	}
-
+    return false;
 }
 
 // Called once after isFinished returns true

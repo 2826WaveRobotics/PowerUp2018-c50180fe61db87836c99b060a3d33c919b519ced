@@ -36,7 +36,7 @@ LeftScaleAuto2::LeftScaleAuto2() {
 	AddSequential(new SetElbow(60));
 
 	//Place cube
-	AddSequential(new SetKirby(-0.7, 0.5));
+	AddSequential(new SetKirby(-0.5, 0.5));
 
 	//Back away
 	AddParallel(new SetElbow(0));

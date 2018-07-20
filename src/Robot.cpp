@@ -94,7 +94,7 @@ void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 
 	//Misc printouts
-//	std::cout << " Arm Encoder : " << elbow.get()->GetAngle() << "  Elevator Encoder: "<< elevator.get()->GetHeight() << " Drive Right:  "
+//	//std::cout << " Arm Encoder : " << elbow.get()->GetAngle() << "  Elevator Encoder: "<< elevator.get()->GetHeight() << " Drive Right:  "
 //			<< drivePID.get()->GetRightEncoder() << "  Drive Left:  " << drivePID.get()->GetLeftEncoder() << "  Arm Sensor:  "
 //			<< kirby.get()->GetSwitch() << "  Elevator Sensor:  " << elevator.get()->IsSensorTripped() <<
 //			" Gyro: " << drivePID.get()->GetYaw()<< std::endl;
@@ -113,15 +113,15 @@ void Robot::AutonomousInit() {
 	     autonomousCommand = new Z_Command();
 	}
 	else if(m_autoType == p_driveStraight){
-		std::cout << "  drive straihgt " << std::endl;
+		//std::cout << "  drive straihgt " << std::endl;
 	    autonomousCommand = new AutoDistance(-160, -0.5, 0, 4);
 	}
 	else if (m_location == 1) { //Left
 		if ((gameData[0] == 'L') && (gameData[1] == 'L')) { //LLL
-			autonomousCommand = new LeftScaleAuto();
+			autonomousCommand = new LeftScaleAuto2();
 		}
 		else if ((gameData[0] =='R') && (gameData[1]== 'L')) { //RLR
-			autonomousCommand = new LeftScaleAuto();
+			autonomousCommand = new LeftScaleAuto2();
 		}
 		else if ((gameData[0] == 'L') && (gameData[1] == 'R')) { //LRL
 			autonomousCommand = new LeftSwitchSideAuto2();
@@ -135,7 +135,7 @@ void Robot::AutonomousInit() {
 	}
 	else if (m_location == 2) {
 		if ((gameData[0] == 'R') && (gameData[1] == 'R')) { //RRR
-			autonomousCommand = new RightScaleSwitchAuto();
+			autonomousCommand = new RightScaleAuto2();
 		}
 		else if ((gameData[0] =='L') && (gameData[1]== 'R')) { //LRL
 			autonomousCommand = new RightScaleAuto2();
@@ -226,7 +226,7 @@ void Robot::TeleopPeriodic() {
 	//Shift
 	if(shiftOn){
 		drivePID.get()->Shift(true);
-		std::cout << " Shift true " << std::endl;
+		//std::cout << " Shift true " << std::endl;
 	}
 	else if(shiftOff){
 		drivePID.get()->Shift(false);
@@ -236,11 +236,11 @@ void Robot::TeleopPeriodic() {
 	if(isShifted){
 		if((elevatorHeight > 0) && (fabs(driverY) > 0.15)) { //only can climb above 0 and down
 			drivePID.get()->ArcadeDrive(fabs(driverY), 0);
-			std::cout << " Is shifted - climb " << std::endl;
+			//std::cout << " Is shifted - climb " << std::endl;
 		}
 		else{
 			drivePID.get()->ArcadeDrive(0, 0);
-			std::cout << " Is shifted - 0 " << std::endl;
+			//std::cout << " Is shifted - 0 " << std::endl;
 		}
 	}
 	else if(visionOR){
@@ -260,7 +260,7 @@ void Robot::TeleopPeriodic() {
 		}
 	}
 	else{
-		drivePID.get()->ArcadeDrive(driverY, driverX);
+		drivePID.get()->ArcadeDrive(0.9*driverY, 0.9*driverX);
 		oi.get()->getDriver()->SetRumble(Joystick::kLeftRumble, 0);
 	}
 
@@ -290,26 +290,26 @@ void Robot::TeleopPeriodic() {
 			|| (elevatorSpeed == 0)){
 		elevator.get()->DisablePID();
 		elevator.get()->SetElevatorSpeed(0.1);
-		std::cout << " constant .1 " << std::endl;
+		//std::cout << " constant .1 " << std::endl;
 	}
 	else if(RobotMap::drivePIDShifter->Get()){
 		elevator.get()->SetElevatorSpeed(0);
-		std::cout << " shift 0 " << std::endl;
+		//std::cout << " shift 0 " << std::endl;
 	}
 	else{
 		if((elevatorHeight < 70) && (elevatorSpeed > 0.15)){
 			if((elevatorHeight > 60)&& (elevatorSpeed > 0.6)){
 				elevatorSpeed = 0.6;
-				std::cout << " 0.6 up " << std::endl;
+				//std::cout << " 0.6 up " << std::endl;
 			}
 			elevator.get()->DisablePID();
 			elevator.get()->SetElevatorSpeed(elevatorSpeed);
-			std::cout << " normal " << std::endl;
+			//std::cout << " normal " << std::endl;
 		}
 		if((elevatorHeight > 0) && (elevatorSpeed < -0.15)){
 			elevator.get()->DisablePID();
 			elevator.get()->SetElevatorSpeed(elevatorSpeed);
-			std::cout << " normal 2 " << std::endl;
+			//std::cout << " normal 2 " << std::endl;
 		}
 	}
 
@@ -324,7 +324,7 @@ void Robot::TeleopPeriodic() {
 	bool operatorX = oi.get()->getOperatorJS()->GetRawButton(3);
 	//Operator Y: 0, Operator B: 140, Operator A: 160, Operator X: 20
 
-	std::cout << " Angle:  " << elbowPosition << std::endl;
+	//std::cout << " Angle:  " << elbowPosition << std::endl;
 
 	//Elbow controls
 	if(elbowOverride){
